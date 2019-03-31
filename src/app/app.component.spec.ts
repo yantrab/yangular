@@ -1,8 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { TableModule } from './table.module';
-import { TableComponent } from './table.component';
+import { TableModule } from '../../projects/mat-virtual-table/src/lib/table.module';
 import { Component } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
 @Component({
   template: `<mat-virtual-table style="height:500px;" [rows]="rows"></mat-virtual-table>`,
   styles: ['cdk-virtual-scroll-viewport{height:500px;}']

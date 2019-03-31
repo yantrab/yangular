@@ -12,7 +12,7 @@ import { MatTable } from '@angular/material';
 import { Subscription } from 'rxjs';
 import { GridTableDataSource } from './data-source';
 import { GridTableVirtualScrollStrategy } from './virtual-scroll.strategy';
-
+// @dynamic
 @Directive({
   selector: 'cdk-virtual-scroll-viewport[gridTableVirtualScroll]',
   providers: [

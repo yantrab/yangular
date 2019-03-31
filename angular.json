@@ -10,7 +10,7 @@
       "prefix": "app",
       "schematics": {
         "@schematics/angular:component": {
-          "style": "sass"
+          "style": "scss"
         }
       },
       "architect": {
@@ -128,6 +128,41 @@
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
             "tsConfig": "e2e/tsconfig.e2e.json",
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "MatVirtualTable": {
+      "root": "projects/mat-virtual-table",
+      "sourceRoot": "projects/mat-virtual-table/src",
+      "projectType": "library",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/mat-virtual-table/tsconfig.lib.json",
+            "project": "projects/mat-virtual-table/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/mat-virtual-table/src/test.ts",
+            "tsConfig": "projects/mat-virtual-table/tsconfig.spec.json",
+            "karmaConfig": "projects/mat-virtual-table/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/mat-virtual-table/tsconfig.lib.json",
+              "projects/mat-virtual-table/tsconfig.spec.json"
+            ],
             "exclude": [
               "**/node_modules/**"
             ]
