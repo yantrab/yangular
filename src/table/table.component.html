@@ -1,5 +1,5 @@
-<div id="table" >
-	<mat-form-field>
+<div id="table">
+	<mat-form-field *ngIf="isFilterable">
 		<input matInput #filter placeholder="חיפוש">
 	</mat-form-field>
 	<cdk-virtual-scroll-viewport gridTableVirtualScroll (scrolledIndexChange)="nextBatch()">

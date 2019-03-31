@@ -50,6 +50,7 @@ export class TableComponent implements OnInit {
   dataSource: GridTableDataSource<any>;
   offset: Observable<number>;
 
+  @Input() isFilterable = false;
   @Input() sticky = true;
   @Input() columnsDef: ColumnDef[];
   @Input() rows: any[];
@@ -72,21 +73,22 @@ export class TableComponent implements OnInit {
     this.sort.sortChange.subscribe(() => {
       this.dataSource.allData = this.orderBy(this.rows, this.sort.active, this.sort.direction as any);
     });
-
-    fromEvent(this.filter.nativeElement, 'keyup')
-      .pipe(distinctUntilChanged(), debounceTime(150))
-      .subscribe(() => {
-        this.pending = true;
-        this.dataSource.allData =
-          this.rows.filter(row => Object.keys(row).
-            some(key => typeof (row[key]) === 'string'
-              && (row[key] as string).startsWith(this.filter.nativeElement.value)));
-        this.pending = false;
-      });
-    if (this.cellDefs) {
-      this.cellDefs.forEach(columnDef => {
-        this.columnsDef.find(c => c.field === columnDef.columnName).template = columnDef.template;
-      });
+    if (this.isFilterable) {
+      fromEvent(this.filter.nativeElement, 'keyup')
+        .pipe(distinctUntilChanged(), debounceTime(150))
+        .subscribe(() => {
+          this.pending = true;
+          this.dataSource.allData =
+            this.rows.filter(row => Object.keys(row).
+              some(key => typeof (row[key]) === 'string'
+                && (row[key] as string).startsWith(this.filter.nativeElement.value)));
+          this.pending = false;
+        });
+      if (this.cellDefs) {
+        this.cellDefs.forEach(columnDef => {
+          this.columnsDef.find(c => c.field === columnDef.columnName).template = columnDef.template;
+        });
+      }
     }
   }
   private init() {
