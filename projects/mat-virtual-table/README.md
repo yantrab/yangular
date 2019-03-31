@@ -39,8 +39,8 @@ export class ComponentsModule { }
 ### Special cells
 ```html
 <mat-virtual-table *ngIf="rows.length" [rows]="rows" [columnsDef]="columns">
-    <ng-template pCellDef column="hebName" let-row="row">
-        <b>{{row.hebName}}</b>
+    <ng-template pCellDef column="name" let-row="row">
+        <b>{{name}}</b>
     </ng-template>
 </mat-virtual-table>
 ```
