@@ -1,5 +1,5 @@
 # MatVirtualTable
-Virtual scroll table based on angualr material, and [this](https://github.com/lujian98/Angular-Material-Virtual-Scroll) repo .
+Virtual scroll table based on angualr material, and [this](https://github.com/lujian98/Angular-Material-Virtual-Scroll) repo . [DEMO](https://stackblitz.com/edit/angular-mhkadr?file=src%2Fapp%2Fapp.component.ts)
 
 ## Getting Started
 
@@ -28,17 +28,17 @@ export class ComponentsModule { }
 
 ### Simple usage
 ```html
- <mat-virtual-table *ngIf="rows.length" [rows]="rows">
+ <mat-virtual-table *ngIf="rows" [rows]="rows">
 ```
 
 ### Column titles
 ```html
- <mat-virtual-table *ngIf="rows.length" [rows]="rows" [columnsDef]="columns">
+ <mat-virtual-table *ngIf="rows" [rows]="rows" [columnsDef]="columns">
 ```
 
 ### Special cells
 ```html
-<mat-virtual-table *ngIf="rows.length" [rows]="rows" [columnsDef]="columns">
+<mat-virtual-table *ngIf="rows" [rows]="rows" [columnsDef]="columns">
     <ng-template pCellDef column="name" let-row="row">
         <b>{{name}}</b>
     </ng-template>
