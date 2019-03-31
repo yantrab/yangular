@@ -1,5 +1,5 @@
 # MatVirtualTable
-Virtual scroll table base on angualr material, and [this](https://github.com/lujian98/Angular-Material-Virtual-Scroll) repo .
+Virtual scroll table based on angualr material, and [this](https://github.com/lujian98/Angular-Material-Virtual-Scroll) repo .
 
 ## Getting Started
 
