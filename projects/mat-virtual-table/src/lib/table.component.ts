@@ -2,14 +2,12 @@ import {
   Component,
   Input,
   OnInit,
-  AfterViewInit,
   ViewChild,
   ElementRef,
   Directive,
   TemplateRef,
   ContentChildren,
-  QueryList,
-  SimpleChanges
+  QueryList
 } from '@angular/core';
 
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
@@ -76,9 +74,10 @@ export class TableComponent implements OnInit {
   @Input() columnsDef: ColumnDef[];
   @Input() rows: any[];
   @Input() isFilterable = true;
+  @Input() pageSize = 80;
+  @Input() filterPlaceholder = 'Filter';
   columns: string[];
   page = 1;
-  pageSize = 80;
 
   constructor() {
   }
