@@ -3,10 +3,10 @@ Virtual scroll table base on angualr material, and [this](https://github.com/luj
 
 ## Getting Started
 
-### install
+### Install
 run `npm i mat-virtual-table`
 
-### import module
+### Import module
 
 ```typescript
 import {TableModule} from 'mat-virtual-table';
@@ -18,7 +18,7 @@ import {TableModule} from 'mat-virtual-table';
             CommonModule,
             FlexLayoutModule,
             RouterModule,
-        TableModule,
+            TableModule,
     ],
     declarations: components,
     exports: [TableModule, MaterialModule, FlexLayoutModule].concat(components),
@@ -26,12 +26,12 @@ import {TableModule} from 'mat-virtual-table';
 export class ComponentsModule { }
 ```
 
-### simple usage
+### Simple usage
 ```html
  <mat-virtual-table *ngIf="rows.length" [rows]="rows">
 ```
 
-### column titles
+### Column titles
 ```html
  <mat-virtual-table *ngIf="rows.length" [rows]="rows" [columnsDef]="columns">
 ```
