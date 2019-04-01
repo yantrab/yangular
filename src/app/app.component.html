@@ -1,2 +1,5 @@
-<mat-virtual-table style="height:500px;" [isFilterable]="true" [rows]="rows">
+<mat-virtual-table style="height:500px;" *ngIf="rows" [rows]="rows" [columnsDef]="columns">
+    <ng-template pCellDef column="name" let-row="row">
+        <b> {{row.name}} </b>
+    </ng-template>
 </mat-virtual-table>

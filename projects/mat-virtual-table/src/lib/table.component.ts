@@ -43,7 +43,7 @@ export class TableComponent implements OnInit, AfterViewInit {
   offset: Observable<number>;
   private _columnsDef: ColumnDef[];
   @Input() set columnsDef(columns: ColumnDef[]) { this._columnsDef = columns; }
-  get columnsDef() { return this._columnsDef }
+  get columnsDef() { return this._columnsDef; }
   @Input() rows: any[];
   @Input() isFilterable = true;
   @Input() pageSize = 80;
@@ -55,7 +55,7 @@ export class TableComponent implements OnInit, AfterViewInit {
     this.init();
     this.dataSource.allData = this.rows.slice(0, this.pageSize);
     if (!this.columnsDef) {
-      this.columnsDef = Object.keys(this.rows[0]).map(key => { return { field: key, title: key } as ColumnDef })
+      this.columnsDef = Object.keys(this.rows[0]).map(key => { return { field: key, title: key } as ColumnDef; });
     }
     this.columns = this.columnsDef.map(c => c.field);
   }
@@ -95,9 +95,11 @@ export class TableComponent implements OnInit, AfterViewInit {
       }, 200);
     });
 
-    this._CellDefs.forEach(columnDef => {
-      this.columnsDef.find(c => c.field === columnDef.columnName).template = columnDef.template;
-    });
+    setTimeout(() => {
+      this._CellDefs.forEach(columnDef => {
+        this.columnsDef.find(c => c.field === columnDef.columnName).template = columnDef.template;
+      });
+    }, 0);
   }
 
   private init() {

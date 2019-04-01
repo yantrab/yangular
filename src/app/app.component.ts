@@ -1,4 +1,5 @@
 import { Component} from '@angular/core';
+import { ColumnDef } from 'projects/mat-virtual-table/src/public-api';
 
 @Component({
   selector: 'app-root',
@@ -7,5 +8,6 @@ import { Component} from '@angular/core';
 })
 export class AppComponent {
   title = 'mat-virtual-table';
-  rows = Array(1000000).fill(0).map((x, i) => { return { name: i + 'name' + i, id: i } });
+  rows = Array(100000).fill(0).map((x, i) => { return { name: 'name' + i, id: i } });
+  columns: ColumnDef[] = [{ field: 'name', title: 'שם' }, { field: 'id', title: 'זהות' }];
 }
