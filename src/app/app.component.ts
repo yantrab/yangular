@@ -1,17 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component} from '@angular/core';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
   title = 'mat-virtual-table';
-  rows = Array(10000).fill({ name: 'name', id: 'id' });
-  ngOnInit() {
-    setTimeout(() => {
-      this.rows = Array(10000).fill({ name: 'name', id: 'id' });
-
-    }, 200);
-  }
+  rows = Array(1000000).fill(0).map((x, i) => { return { name: i + 'name' + i, id: i } });
 }

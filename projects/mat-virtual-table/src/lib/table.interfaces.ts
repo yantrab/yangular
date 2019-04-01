@@ -1,5 +1,6 @@
 export interface ColumnDef {
     field: string;
-    title: string;
-    template?;
+    title?: string;
+    isSortable?: boolean;
+    isFilterable?: boolean;
 }

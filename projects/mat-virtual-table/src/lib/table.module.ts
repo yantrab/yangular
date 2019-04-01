@@ -1,7 +1,8 @@
 import { NgModule } from '@angular/core';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { GridTableVirtualScrollModule } from './virtual-scroll/virtual-scroll.module';
-import { TableComponent, PCellDef } from './table.component';
+import { TableComponent } from './table.component';
+import { PCellDef } from "./PCellDef";
 import { CommonModule } from '@angular/common';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import {

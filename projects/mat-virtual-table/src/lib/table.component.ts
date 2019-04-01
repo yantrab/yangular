@@ -4,10 +4,9 @@ import {
   OnInit,
   ViewChild,
   ElementRef,
-  Directive,
-  TemplateRef,
   ContentChildren,
-  QueryList
+  QueryList,
+  AfterViewInit
 } from '@angular/core';
 
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
@@ -17,70 +16,40 @@ import { Observable, fromEvent, BehaviorSubject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { GridTableDataSource } from './virtual-scroll/data-source';
 import { MatSort } from '@angular/material';
-import { ColumnDef } from './table.interfaces';
-import { orderBy } from 'lodash';
+import { ColumnDef as _columnsDef } from './table.interfaces';
+import { orderBy, keyBy } from 'lodash';
+import { PCellDef } from './PCellDef';
 
-@Directive({ selector: '[pCellDef]' })
-export class PCellDef {
-  constructor(public template: TemplateRef<any>) { }
-  /** Unique name for this column. */
-  @Input('column')
-  get columnName(): string { return this._columnName; }
-  set columnName(name: string) {
-    this._columnName = name;
-  }
-  private _columnName: string;
+interface ColumnDef extends _columnsDef {
+  template?;
 }
+
 @Component({
   selector: 'mat-virtual-table',
   templateUrl: './table.component.html',
   styleUrls: ['./table.component.scss']
 })
-export class TableComponent implements OnInit {
+export class TableComponent implements OnInit, AfterViewInit {
   pending: boolean;
   sticky = false;
   @ViewChild(CdkVirtualScrollViewport) viewport: CdkVirtualScrollViewport;
+  @ViewChild(MatSort) matSort: MatSort;
+  @ViewChild('filter') filter: ElementRef;
 
-  sort: MatSort;
-  @ViewChild(MatSort) set matSort(matSort: MatSort) {
-    this.sort = matSort;
-    this.sort.sortChange.subscribe(() => {
-      this.dataSource.allData = orderBy(this.rows, this.sort.active, this.sort.direction as any);
-      this.viewport.scrollToOffset(0);
-    });
-  }
 
-  filter: ElementRef;
-  @ViewChild('filter') set filterRef(filterRef: ElementRef) {
-    this.filter = filterRef;
-    if (this.isFilterable) {
-      fromEvent(this.filter.nativeElement, 'keyup')
-        .pipe(distinctUntilChanged(), debounceTime(150))
-        .subscribe(() => {
-          this.pending = true;
-          this.dataSource.allData =
-            this.rows.filter(row => Object.keys(row).
-              some(key => typeof (row[key]) === 'string'
-                && (row[key] as string).startsWith(this.filter.nativeElement.value)));
-          this.viewport.scrollToOffset(0);
-          this.pending = false;
-        });
-    }
-  }
   @ContentChildren(PCellDef) _CellDefs: QueryList<PCellDef>;
   filterChange = new BehaviorSubject('');
   dataSource: GridTableDataSource<any>;
   offset: Observable<number>;
-  @Input() columnsDef: ColumnDef[];
+  private _columnsDef: ColumnDef[];
+  @Input() set columnsDef(columns: ColumnDef[]) { this._columnsDef = columns; }
+  get columnsDef() { return this._columnsDef }
   @Input() rows: any[];
   @Input() isFilterable = true;
   @Input() pageSize = 80;
   @Input() filterPlaceholder = 'Filter';
   columns: string[];
   page = 1;
-
-  constructor() {
-  }
 
   ngOnInit() {
     this.init();
@@ -90,6 +59,43 @@ export class TableComponent implements OnInit {
     }
     this.columns = this.columnsDef.map(c => c.field);
   }
+
+  ngAfterViewInit(): void {
+    if (this.isFilterable || this.columnsDef.some(c => c.isFilterable)) {
+      const filterables = this.columnsDef.filter(c => c.isFilterable);
+      const defByKey = keyBy(this.columnsDef, c => c.field);
+      for (const row of this.rows) {
+        row.query = ' ';
+        for (const key of Object.keys(row)) {
+          if (!filterables.length || defByKey[key].isFilterable) {
+            row.query += row[key] + ' ';
+          }
+        }
+        row.query = row.query.toLowerCase();
+      }
+      fromEvent(this.filter.nativeElement, 'keyup')
+        .pipe(distinctUntilChanged(), debounceTime(150))
+        .subscribe(() => {
+          this.pending = true;
+          setTimeout(() => {
+            this.dataSource.allData =
+              this.rows.filter(row => (row.query as string).indexOf(' ' + this.filter.nativeElement.value) !== -1);
+            this.viewport.scrollToOffset(0);
+            setTimeout(() => this.pending = false, 0);
+          }, 200);
+        });
+    }
+
+    this.matSort.sortChange.subscribe(() => {
+      this.pending = true;
+      setTimeout(() => {
+        this.dataSource.allData = orderBy(this.rows, this.matSort.active, this.matSort.direction as any);
+        this.viewport.scrollToOffset(0);
+        setTimeout(() => this.pending = false, 0);
+      }, 200);
+    });
+  }
+
   private init() {
     if (this.dataSource) {
       return;

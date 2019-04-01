@@ -1,4 +1,4 @@
-<div id="table"  fxLayout="column">
+<div id="table" fxLayout="column">
 	<mat-form-field *ngIf="isFilterable" fxFlex="50px">
 		<input matInput #filter [placeholder]="filterPlaceholder">
 	</mat-form-field>
@@ -6,7 +6,7 @@
 		<mat-table matSort [dataSource]="dataSource">
 			<ng-container *ngFor="let column of columnsDef" matColumnDef="{{ column.field }}">
 				<mat-header-cell *matHeaderCellDef>
-					<div mat-sort-header>{{ column.title }}</div>
+					<div [disabled]="column.isSortable === false" mat-sort-header>{{ column.title || column.field }}</div>
 				</mat-header-cell>
 				<mat-cell *matCellDef="let row">
 					<ng-container *ngIf="column.template else defult" [ngTemplateOutlet]="column.template"
