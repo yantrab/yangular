@@ -1,6 +1,19 @@
 {
   "name": "mat-virtual-table",
-  "version": "1.1.2",
+  "version": "1.1.3",
+  "keywords": [
+    "virtual-scroll",
+    "virtual scroll",
+    "angular",
+    "angular 7",
+    "angular 6",
+    "angular 5",
+    "angular 4",
+    "angular 4",
+    "material",
+    "material table",
+    "material virtual table"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/yantrab/mat-virtual-table.git"
