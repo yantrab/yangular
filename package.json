@@ -22,6 +22,7 @@
     "@angular/platform-browser": "~7.2.0",
     "@angular/platform-browser-dynamic": "~7.2.0",
     "@angular/router": "~7.2.0",
+    "angular-resizable-element": "^3.2.4",
     "core-js": "^2.5.4",
     "lodash": "^4.17.11",
     "rxjs": "~6.3.3",

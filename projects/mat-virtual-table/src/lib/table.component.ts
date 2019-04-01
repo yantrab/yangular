@@ -12,9 +12,8 @@ import {
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import { distinctUntilChanged, debounceTime } from 'rxjs/operators';
 
-import { Observable, fromEvent, BehaviorSubject } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { GridTableDataSource } from './virtual-scroll/data-source';
+import { fromEvent, BehaviorSubject } from 'rxjs';
+import { GridTableDataSource } from './data-source';
 import { MatSort } from '@angular/material';
 import { ColumnDef as _columnsDef } from './table.interfaces';
 import { orderBy, keyBy } from 'lodash';
@@ -31,29 +30,27 @@ interface ColumnDef extends _columnsDef {
 })
 export class TableComponent implements OnInit, AfterViewInit {
   pending: boolean;
-  sticky = false;
+  sticky = true;
   @ViewChild(CdkVirtualScrollViewport) viewport: CdkVirtualScrollViewport;
   @ViewChild(MatSort) matSort: MatSort;
   @ViewChild('filter') filter: ElementRef;
-
-
   @ContentChildren(PCellDef) _CellDefs: QueryList<PCellDef>;
   filterChange = new BehaviorSubject('');
   dataSource: GridTableDataSource<any>;
-  offset: Observable<number>;
+  offset: number;
   private _columnsDef: ColumnDef[];
   @Input() set columnsDef(columns: ColumnDef[]) { this._columnsDef = columns; }
   get columnsDef() { return this._columnsDef; }
   @Input() rows: any[];
   @Input() isFilterable = true;
-  @Input() pageSize = 80;
   @Input() filterPlaceholder = 'Filter';
+  @Input() itemSize = 47;
+  @Input() headerSize = 56;
   columns: string[];
-  page = 1;
-
   ngOnInit() {
     this.init();
-    this.dataSource.allData = this.rows.slice(0, this.pageSize);
+    this.viewport.setTotalContentSize(this.rows.length);
+    this.dataSource.allData = this.rows;
     if (!this.columnsDef) {
       this.columnsDef = Object.keys(this.rows[0]).map(key => { return { field: key, title: key } as ColumnDef; });
     }
@@ -109,24 +106,38 @@ export class TableComponent implements OnInit, AfterViewInit {
     this.dataSource = new GridTableDataSource([], {
       viewport: this.viewport,
     });
-    this.offset = this.viewport.renderedRangeStream.pipe(
-      map(() => -this.viewport.getOffsetToRenderedContentStart())
-    );
   }
-  nextBatch(event) {
-    if (!this.sticky) { this.sticky = true; }
-    const buffer = 20;
-    const range = this.viewport.getRenderedRange();
-    const end = range.end;
-    if (this.dataSource.allData && this.dataSource.allData.length > 0) {
-      if (end + buffer > this.page * this.pageSize) {
-        this.page++;
-        this.pending = true;
-        setTimeout(() => {
-          this.dataSource.allData = this.rows.slice(0, this.page * this.pageSize);
-          this.pending = false;
-        }, 250);
-      }
-    }
+
+
+  start: any = undefined;
+  pressed: boolean = false;
+  startX: any;
+  startWidth: any;
+
+
+  resizeTable(event: any, column: any) {
+    this.start = event.target;
+    this.pressed = true;
+    this.startX = event.pageX;
+    this.startWidth = this.start.clientWidth;
+    this.mouseMove(column);
   }
+
+
+  resizableFnMousemove(event, column) {
+    column.width = this.startWidth + (event.pageX - this.startX);
+    let index = this.start.cellIndex;
+  }
+
+  mouseMove(column: any) {
+    const moveFn = (event) => this.resizableFnMousemove(event, column);
+    const upFn = (event) => {
+      this.pressed = false;
+      document.removeEventListener('mousemove', moveFn);
+    };
+
+    document.addEventListener('mousemove', moveFn);
+    document.addEventListener('mouseup', upFn);
+  }
+
 }

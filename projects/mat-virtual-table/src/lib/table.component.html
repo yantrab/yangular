@@ -2,11 +2,12 @@
 	<mat-form-field *ngIf="isFilterable" fxFlex="50px">
 		<input matInput #filter [placeholder]="filterPlaceholder">
 	</mat-form-field>
-	<cdk-virtual-scroll-viewport fxFlex gridTableVirtualScroll (scrolledIndexChange)="nextBatch($event)">
+	<cdk-virtual-scroll-viewport fxFlex [itemSize]="itemSize" (scrolledIndexChange)="offset = 0">
 		<mat-table matSort [dataSource]="dataSource">
 			<ng-container *ngFor="let column of columnsDef" matColumnDef="{{ column.field }}">
 				<mat-header-cell *matHeaderCellDef>
-					<div [disabled]="column.isSortable === false" mat-sort-header>{{ column.title || column.field }}</div>
+					<div [disabled]="column.isSortable === false" mat-sort-header>{{ column.title || column.field }}
+					</div>
 				</mat-header-cell>
 				<mat-cell *matCellDef="let row">
 					<ng-container *ngIf="column.template else defult" [ngTemplateOutlet]="column.template"
@@ -23,10 +24,10 @@
 				</mat-header-cell>
 			</ng-container>
 
-			<mat-header-row *matHeaderRowDef="columns; sticky: sticky" [style.top.px]="offset | async">
+			<mat-header-row *matHeaderRowDef="columns; sticky: sticky" [style.top.px]="offset ">
 			</mat-header-row>
 			<mat-header-row class="progress" *matHeaderRowDef="['progress']; sticky: sticky"
-				[style.top.px]="(offset | async) + 56">
+				[style.top.px]="headerSize">
 			</mat-header-row>
 			<mat-row *matRowDef="let row; columns: columns"></mat-row>
 
