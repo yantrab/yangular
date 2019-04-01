@@ -94,6 +94,10 @@ export class TableComponent implements OnInit, AfterViewInit {
         setTimeout(() => this.pending = false, 0);
       }, 200);
     });
+
+    this._CellDefs.forEach(columnDef => {
+      this.columnsDef.find(c => c.field === columnDef.columnName).template = columnDef.template;
+    });
   }
 
   private init() {
