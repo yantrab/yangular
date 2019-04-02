@@ -1,7 +1,9 @@
-import { DataSource, ListRange } from '@angular/cdk/collections';
+import { DataSource } from '@angular/cdk/collections';
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
-import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
-import { map, shareReplay, startWith } from 'rxjs/operators';
+import { BehaviorSubject, Observable } from 'rxjs';
+const PAGESIZE = 50;
+
+
 
 export class GridTableDataSource extends DataSource<any> {
   private _data: any[];
@@ -11,7 +13,7 @@ export class GridTableDataSource extends DataSource<any> {
   set allData(data: any[]) {
     this._data = data;
     this.viewport.scrollToOffset(0);
-    this.visibleData.next(this._data.slice(0, 30));
+    this.visibleData.next(this._data.slice(0, PAGESIZE));
   }
 
   offset = 0;
@@ -20,8 +22,9 @@ export class GridTableDataSource extends DataSource<any> {
     this._data = initialData;
     this.viewport.elementScrolled().subscribe((ev: any) => {
       const start = Math.floor(ev.currentTarget.scrollTop / 47);
-      const slicedData = this._data.slice(start, start + 30);
-      this.offset = 47 * start;
+      const prevExtraData = start > (PAGESIZE / 2) ? (PAGESIZE / 2) : start;
+      const slicedData = this._data.slice(start - prevExtraData, start + (PAGESIZE - prevExtraData));
+      this.offset = 47 * (start - prevExtraData);
       this.viewport.setRenderedContentOffset(this.offset);
       this.visibleData.next(slicedData);
     });

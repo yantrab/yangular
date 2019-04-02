@@ -1,5 +1,5 @@
 # MatVirtualTable
-Virtual scroll table based on angualr material, with filtering and sorting
+Virtual scroll table based on angualr material, with sticky columns, filtering and sorting.
 
 ## Getting Started
 

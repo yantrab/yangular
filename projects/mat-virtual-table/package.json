@@ -1,6 +1,7 @@
 {
   "name": "mat-virtual-table",
-  "version": "1.1.5",
+  "version": "1.2.1",
+  "license": "ISC",
   "keywords": [
     "virtual-scroll",
     "virtual scroll",
