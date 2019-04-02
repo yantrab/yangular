@@ -1,5 +1,5 @@
 # MatVirtualTable
-Virtual scroll table based on angualr material, and [this](https://github.com/lujian98/Angular-Material-Virtual-Scroll) repo . [DEMO](https://stackblitz.com/edit/mat-virtual-table-basic?file=src/app/app.component.ts)
+Virtual scroll table based on angualr material, with filtering and sorting
 
 ## Getting Started
 
