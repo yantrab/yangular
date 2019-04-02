@@ -61,12 +61,6 @@ export class TableComponent implements OnInit, AfterViewInit {
   @Input() headerSize = 56;
   columns: string[];
   ngOnInit() {
-
-    // this.viewport.setRenderedContentOffset(this.rows.length);
-    // this.viewport.setRenderedRange({ start: 0, end: 200 });
-    // setTimeout(() => {
-    //   this.dataSource.allData = this.rows;
-    // }, 500);
     if (!this.columnsDef) {
       this.columnsDef = Object.keys(this.rows[0]).map(key => { return { field: key, title: key } as ColumnDef; });
     }
@@ -76,8 +70,7 @@ export class TableComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     this.dataSource = new GridTableDataSource(this.rows, this.viewport);
     this.viewport.setTotalContentSize(this.itemSize * this.rows.length);
-    this.dataSource.allData = this.rows;//.slice(0, 30);
-
+    this.dataSource.allData = this.rows;
     if (this.isFilterable || this.columnsDef.some(c => c.isFilterable)) {
       const filterables = this.columnsDef.filter(c => c.isFilterable);
       const defByKey = keyBy(this.columnsDef, c => c.field);
@@ -97,7 +90,6 @@ export class TableComponent implements OnInit, AfterViewInit {
           setTimeout(() => {
             this.dataSource.allData =
               this.rows.filter(row => (row.query as string).indexOf(' ' + this.filter.nativeElement.value) !== -1);
-            this.viewport.scrollToOffset(0);
             setTimeout(() => this.pending = false, 0);
           }, 200);
         });
@@ -107,7 +99,6 @@ export class TableComponent implements OnInit, AfterViewInit {
       this.pending = true;
       setTimeout(() => {
         this.dataSource.allData = orderBy(this.rows, this.matSort.active, this.matSort.direction as any);
-        this.viewport.scrollToOffset(0);
         setTimeout(() => this.pending = false, 0);
       }, 200);
     });

@@ -2,7 +2,7 @@
 	<mat-form-field *ngIf="isFilterable" fxFlex="50px">
 		<input matInput #filter [placeholder]="filterPlaceholder">
 	</mat-form-field>
-	<cdk-virtual-scroll-viewport fxFlex  (scrolledIndexChange)="offset = 0">
+	<cdk-virtual-scroll-viewport fxFlex (scrolledIndexChange)="offset = 0">
 		<mat-table matSort [dataSource]="dataSource">
 			<ng-container *ngFor="let column of columnsDef" matColumnDef="{{ column.field }}">
 				<mat-header-cell *matHeaderCellDef>
@@ -24,10 +24,10 @@
 				</mat-header-cell>
 			</ng-container>
 
-			<mat-header-row *matHeaderRowDef="columns; sticky: sticky" [style.top.px]="0">
+			<mat-header-row *matHeaderRowDef="columns; sticky: sticky" [style.top.px]="-dataSource?.offset">
 			</mat-header-row>
 			<mat-header-row class="progress" *matHeaderRowDef="['progress']; sticky: sticky"
-				[style.top.px]="headerSize">
+				[style.top.px]="dataSource?.offset + headerSize">
 			</mat-header-row>
 			<mat-row *matRowDef="let row; columns: columns"></mat-row>
 

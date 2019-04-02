@@ -10,17 +10,19 @@ export class GridTableDataSource extends DataSource<any> {
   }
   set allData(data: any[]) {
     this._data = data;
-    this.viewport.scrollToIndex(0);
+    this.viewport.scrollToOffset(0);
     this.visibleData.next(this._data.slice(0, 30));
   }
 
+  offset = 0;
   constructor(initialData: any[], private viewport: CdkVirtualScrollViewport) {
     super();
     this._data = initialData;
     this.viewport.elementScrolled().subscribe((ev: any) => {
       const start = Math.floor(ev.currentTarget.scrollTop / 47);
       const slicedData = this._data.slice(start, start + 30);
-      this.viewport.setRenderedContentOffset(47 * start);
+      this.offset = 47 * start;
+      this.viewport.setRenderedContentOffset(this.offset);
       this.visibleData.next(slicedData);
     });
   }
