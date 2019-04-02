@@ -18,15 +18,28 @@ import { MatSort } from '@angular/material';
 import { ColumnDef as _columnsDef } from './table.interfaces';
 import { orderBy, keyBy } from 'lodash';
 import { PCellDef } from './PCellDef';
-
+import { FixedSizeVirtualScrollStrategy, VIRTUAL_SCROLL_STRATEGY } from '@angular/cdk/scrolling';
 interface ColumnDef extends _columnsDef {
   template?;
 }
 
+export class CustomVirtualScrollStrategy extends FixedSizeVirtualScrollStrategy {
+  private viewport: CdkVirtualScrollViewport;
+  constructor() {
+    super(47, 1000, 2000);
+  }
+  attach(viewport: CdkVirtualScrollViewport): void {
+    this.viewport = viewport;
+    this.onDataLengthChanged();
+  }
+}
+
+
 @Component({
   selector: 'mat-virtual-table',
   templateUrl: './table.component.html',
-  styleUrls: ['./table.component.scss']
+  styleUrls: ['./table.component.scss'],
+  providers: [{ provide: VIRTUAL_SCROLL_STRATEGY, useClass: CustomVirtualScrollStrategy }]
 })
 export class TableComponent implements OnInit, AfterViewInit {
   pending: boolean;
@@ -36,7 +49,7 @@ export class TableComponent implements OnInit, AfterViewInit {
   @ViewChild('filter') filter: ElementRef;
   @ContentChildren(PCellDef) _CellDefs: QueryList<PCellDef>;
   filterChange = new BehaviorSubject('');
-  dataSource: GridTableDataSource<any>;
+  dataSource: GridTableDataSource;
   offset: number;
   private _columnsDef: ColumnDef[];
   @Input() set columnsDef(columns: ColumnDef[]) { this._columnsDef = columns; }
@@ -48,9 +61,12 @@ export class TableComponent implements OnInit, AfterViewInit {
   @Input() headerSize = 56;
   columns: string[];
   ngOnInit() {
-    this.init();
-    this.viewport.setTotalContentSize(this.rows.length);
-    this.dataSource.allData = this.rows;
+
+    // this.viewport.setRenderedContentOffset(this.rows.length);
+    // this.viewport.setRenderedRange({ start: 0, end: 200 });
+    // setTimeout(() => {
+    //   this.dataSource.allData = this.rows;
+    // }, 500);
     if (!this.columnsDef) {
       this.columnsDef = Object.keys(this.rows[0]).map(key => { return { field: key, title: key } as ColumnDef; });
     }
@@ -58,6 +74,10 @@ export class TableComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
+    this.dataSource = new GridTableDataSource(this.rows, this.viewport);
+    this.viewport.setTotalContentSize(this.itemSize * this.rows.length);
+    this.dataSource.allData = this.rows;//.slice(0, 30);
+
     if (this.isFilterable || this.columnsDef.some(c => c.isFilterable)) {
       const filterables = this.columnsDef.filter(c => c.isFilterable);
       const defByKey = keyBy(this.columnsDef, c => c.field);
@@ -98,16 +118,6 @@ export class TableComponent implements OnInit, AfterViewInit {
       });
     }, 0);
   }
-
-  private init() {
-    if (this.dataSource) {
-      return;
-    }
-    this.dataSource = new GridTableDataSource([], {
-      viewport: this.viewport,
-    });
-  }
-
 
   start: any = undefined;
   pressed: boolean = false;

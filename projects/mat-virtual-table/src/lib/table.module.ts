@@ -11,7 +11,6 @@ import {
   MatProgressBarModule,
   MatSortModule
 } from '@angular/material';
-import { ResizableModule } from 'angular-resizable-element';
 
 const components = [TableComponent, PCellDef];
 const modules = [
@@ -20,7 +19,6 @@ const modules = [
   MatFormFieldModule,
   MatProgressBarModule,
   MatSortModule,
-  ResizableModule
 ];
 @NgModule({
   declarations: components,
