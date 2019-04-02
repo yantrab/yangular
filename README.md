@@ -1,27 +1,50 @@
 # MatVirtualTable
+Virtual scroll table based on angualr material, with sticky columns, filtering and sorting.
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 7.3.6.
+## Getting Started
 
-## Development server
+### Install
+run `npm i mat-virtual-table`
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+### Import module
 
-## Code scaffolding
+```typescript
+import {TableModule} from 'mat-virtual-table';
+@NgModule({
+    imports: [
+            FormsModule,
+            ReactiveFormsModule,
+            MaterialModule,
+            CommonModule,
+            FlexLayoutModule,
+            RouterModule,
+            TableModule,
+    ],
+    declarations: components,
+    exports: [TableModule, MaterialModule, FlexLayoutModule].concat(components),
+})
+export class ComponentsModule { }
+```
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+### Simple usage
+```html
+ <mat-virtual-table *ngIf="rows" [rows]="rows">
+```
 
-## Build
+### Column titles 
+```html
+ <mat-virtual-table *ngIf="rows" [rows]="rows" [columnsDef]="columns">
+```
+[example](https://stackblitz.com/edit/mat-virtual-table-basic-tupcj8?file=src%2Fapp%2Fapp.component.html)
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+### Special cells
+```html
+<mat-virtual-table *ngIf="rows" [rows]="rows" [columnsDef]="columns">
+    <ng-template pCellDef column="name" let-row="row">
+        <b>{{name}}</b>
+    </ng-template>
+</mat-virtual-table>
+```
+[example](https://stackblitz.com/edit/mat-virtual-table-special-cells?file=src/app/app.component.html)
 
-## Running unit tests
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
