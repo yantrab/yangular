@@ -41,10 +41,18 @@ export class ComponentsModule { }
 ```html
 <mat-virtual-table [rows]="rows" [columnsDef]="columns">
     <ng-template pCellDef column="name" let-row="row">
-        <b>{{name}}</b>
+        <b>{{row.name}}</b>
     </ng-template>
 </mat-virtual-table>
 ```
 [example](https://stackblitz.com/edit/mat-virtual-table-special-cells?file=src/app/app.component.html)
+
+### Api
+```typescript
+@Input() rows; // table rows.
+@Input() columnsDef; // columns definitions. each column it could be define title, isSortable, and isFilterable.
+@Input() isFilterable = true; // true by default, and filter all columns, Unless otherwise specified in the columnsDef.
+@Input() filterPlaceholder = 'Filter';  
+```
 
 
