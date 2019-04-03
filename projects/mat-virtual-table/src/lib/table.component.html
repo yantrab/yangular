@@ -2,7 +2,7 @@
 	<mat-form-field *ngIf="isFilterable" fxFlex="50px">
 		<input matInput #filter [placeholder]="filterPlaceholder">
 	</mat-form-field>
-	<cdk-virtual-scroll-viewport fxFlex>
+	<cdk-virtual-scroll-viewport fxFlex  >
 		<mat-table matSort [dataSource]="dataSource">
 			<ng-container *ngFor="let column of columnsDef" matColumnDef="{{ column.field }}">
 				<mat-header-cell *matHeaderCellDef>

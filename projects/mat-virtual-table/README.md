@@ -28,18 +28,18 @@ export class ComponentsModule { }
 
 ### Simple usage
 ```html
- <mat-virtual-table *ngIf="rows" [rows]="rows">
+ <mat-virtual-table [rows]="rows">
 ```
 
 ### Column titles 
 ```html
- <mat-virtual-table *ngIf="rows" [rows]="rows" [columnsDef]="columns">
+ <mat-virtual-table [rows]="rows" [columnsDef]="columns">
 ```
 [example](https://stackblitz.com/edit/mat-virtual-table-basic-tupcj8?file=src%2Fapp%2Fapp.component.html)
 
 ### Special cells
 ```html
-<mat-virtual-table *ngIf="rows" [rows]="rows" [columnsDef]="columns">
+<mat-virtual-table [rows]="rows" [columnsDef]="columns">
     <ng-template pCellDef column="name" let-row="row">
         <b>{{name}}</b>
     </ng-template>

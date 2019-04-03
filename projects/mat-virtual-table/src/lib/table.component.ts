@@ -24,12 +24,10 @@ interface ColumnDef extends _columnsDef {
 }
 
 export class CustomVirtualScrollStrategy extends FixedSizeVirtualScrollStrategy {
-  private viewport: CdkVirtualScrollViewport;
   constructor() {
     super(47, 1000, 2000);
   }
   attach(viewport: CdkVirtualScrollViewport): void {
-    this.viewport = viewport;
     this.onDataLengthChanged();
   }
 }
@@ -52,19 +50,32 @@ export class TableComponent implements OnInit, AfterViewInit {
   dataSource: GridTableDataSource;
   offset: number;
   private _columnsDef: ColumnDef[];
-  @Input() set columnsDef(columns: ColumnDef[]) { this._columnsDef = columns; }
+  @Input() set columnsDef(columns: ColumnDef[]) {
+    this._columnsDef = columns;
+    this.columns = this.columnsDef.map(c => c.field);
+  }
   get columnsDef() { return this._columnsDef; }
-  @Input() rows: any[];
+
+  private _rows: any[];
+  @Input() set rows(rows: any[]) {
+    this._rows = rows || [];
+
+    this.dataSource = new GridTableDataSource(this._rows, this.viewport);
+    this.viewport.setTotalContentSize(this.itemSize * this._rows.length);
+    this.dataSource.allData = this._rows;
+
+    if (!this.columnsDef) {
+      this.columnsDef = Object.keys(this._rows[0]).map(key => { return { field: key, title: key } as ColumnDef; });
+    }
+  }
+  get rows() { return this._rows; }
   @Input() isFilterable = true;
   @Input() filterPlaceholder = 'Filter';
   @Input() itemSize = 47;
   @Input() headerSize = 56;
   columns: string[];
   ngOnInit() {
-    if (!this.columnsDef) {
-      this.columnsDef = Object.keys(this.rows[0]).map(key => { return { field: key, title: key } as ColumnDef; });
-    }
-    this.columns = this.columnsDef.map(c => c.field);
+
   }
 
   ngAfterViewInit(): void {
