@@ -13,11 +13,13 @@ export class GridTableDataSource extends DataSource<any> {
   set allData(data: any[]) {
     this._data = data;
     this.viewport.scrollToOffset(0);
+    this.viewport.setTotalContentSize(this.itemSize * data.length);
+
     this.visibleData.next(this._data.slice(0, PAGESIZE));
   }
 
   offset = 0;
-  constructor(initialData: any[], private viewport: CdkVirtualScrollViewport) {
+  constructor(initialData: any[], private viewport: CdkVirtualScrollViewport, private itemSize: number) {
     super();
     this._data = initialData;
     this.viewport.elementScrolled().subscribe((ev: any) => {

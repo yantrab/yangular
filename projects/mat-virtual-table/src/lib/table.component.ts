@@ -58,17 +58,14 @@ export class TableComponent implements OnInit, AfterViewInit {
 
   private _rows: any[];
   @Input() set rows(rows: any[]) {
+    if (!rows) { return; }
     this._rows = rows || [];
-
-    this.dataSource = new GridTableDataSource(this._rows, this.viewport);
-    this.viewport.setTotalContentSize(this.itemSize * this._rows.length);
-    this.dataSource.allData = this._rows;
-
     if (!this.columnsDef) {
       this.columnsDef = Object.keys(this._rows[0]).map(key => { return { field: key, title: key } as ColumnDef; });
     }
+    this.initDatasource();
   }
-  get rows() { return this._rows; }
+  get rows() { return this._rows || []; }
   @Input() isFilterable = true;
   @Input() filterPlaceholder = 'Filter';
   @Input() itemSize = 47;
@@ -78,9 +75,10 @@ export class TableComponent implements OnInit, AfterViewInit {
 
   }
 
-  ngAfterViewInit(): void {
-    this.dataSource = new GridTableDataSource(this.rows, this.viewport);
-    this.viewport.setTotalContentSize(this.itemSize * this.rows.length);
+  initDatasource() {
+    if (!this.dataSource) {
+      this.dataSource = new GridTableDataSource(this.rows, this.viewport, this.itemSize);
+    }
     this.dataSource.allData = this.rows;
     if (this.isFilterable || this.columnsDef.some(c => c.isFilterable)) {
       const filterables = this.columnsDef.filter(c => c.isFilterable);
@@ -94,6 +92,10 @@ export class TableComponent implements OnInit, AfterViewInit {
         }
         row.query = row.query.toLowerCase();
       }
+    }
+  }
+  ngAfterViewInit(): void {
+    if (this.isFilterable || this.columnsDef.some(c => c.isFilterable)) {
       fromEvent(this.filter.nativeElement, 'keyup')
         .pipe(distinctUntilChanged(), debounceTime(150))
         .subscribe(() => {
