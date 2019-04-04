@@ -7,7 +7,8 @@ import {
   ContentChildren,
   QueryList,
   AfterViewInit,
-  ViewEncapsulation
+  ViewEncapsulation,
+  ViewChildren
 } from '@angular/core';
 
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
@@ -15,13 +16,14 @@ import { distinctUntilChanged, debounceTime } from 'rxjs/operators';
 
 import { fromEvent, BehaviorSubject } from 'rxjs';
 import { GridTableDataSource } from './data-source';
-import { MatSort } from '@angular/material';
+import { MatSort, MatHeaderCell } from '@angular/material';
 import { ColumnDef as _columnsDef } from './table.interfaces';
 import { orderBy, keyBy } from 'lodash';
 import { PCellDef } from './PCellDef';
 import { FixedSizeVirtualScrollStrategy, VIRTUAL_SCROLL_STRATEGY } from '@angular/cdk/scrolling';
 interface ColumnDef extends _columnsDef {
   template?;
+  width?: string;
 }
 
 export class CustomVirtualScrollStrategy extends FixedSizeVirtualScrollStrategy {
@@ -47,6 +49,7 @@ export class TableComponent implements OnInit, AfterViewInit {
   @ViewChild(CdkVirtualScrollViewport) viewport: CdkVirtualScrollViewport;
   @ViewChild(MatSort) matSort: MatSort;
   @ViewChild('filter') filter: ElementRef;
+  @ViewChildren('headercell') headerCells: QueryList<ElementRef>;
   @ContentChildren(PCellDef) _CellDefs: QueryList<PCellDef>;
   filterChange = new BehaviorSubject('');
   dataSource: GridTableDataSource;
@@ -125,12 +128,17 @@ export class TableComponent implements OnInit, AfterViewInit {
     }, 0);
   }
 
-  resizeTable(event, column) {
-    const target = event.target.parentElement;
-    const startX = event.pageX;
-    const startWidth = target.clientWidth;
+  resizeTable(i) {
+    const cells = this.headerCells.toArray();
+    const el = cells[i].nativeElement;
+    const elNext = cells[i + 1] ? cells[i + 1].nativeElement : undefined;
+    const startX = el.pageX;
     const moveFn = (ev: any) => {
-      column.width = startWidth + (ev.pageX - startX) + 'px';
+      const offset = ev.pageX - startX;
+      this.columnsDef[i].width = (el.clientWidth + offset) + 'px';
+      if (elNext) {
+        this.columnsDef[i + 1].width = (elNext.clientWidth - offset) + 'px';
+      }
     };
     const upFn = () => {
       document.removeEventListener('mousemove', moveFn);

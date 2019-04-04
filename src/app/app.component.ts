@@ -9,7 +9,7 @@ import { ColumnDef } from 'projects/mat-virtual-table/src/public-api';
 export class AppComponent implements OnInit {
   ngOnInit(): void {
     setTimeout(() => {
-      this.rows = Array(500000).fill(0).map((x, i) => { return { name: 'name' + i, id: i, } });;
+      //this.rows = Array(500000).fill(0).map((x, i) => { return { name: 'name' + i, id: i, } });;
     }, 1000);
   }
   title = 'mat-virtual-table';
