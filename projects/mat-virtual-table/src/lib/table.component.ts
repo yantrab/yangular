@@ -6,7 +6,8 @@ import {
   ElementRef,
   ContentChildren,
   QueryList,
-  AfterViewInit
+  AfterViewInit,
+  ViewEncapsulation
 } from '@angular/core';
 
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
@@ -37,7 +38,8 @@ export class CustomVirtualScrollStrategy extends FixedSizeVirtualScrollStrategy 
   selector: 'mat-virtual-table',
   templateUrl: './table.component.html',
   styleUrls: ['./table.component.scss'],
-  providers: [{ provide: VIRTUAL_SCROLL_STRATEGY, useClass: CustomVirtualScrollStrategy }]
+  providers: [{ provide: VIRTUAL_SCROLL_STRATEGY, useClass: CustomVirtualScrollStrategy }],
+  encapsulation: ViewEncapsulation.None,
 })
 export class TableComponent implements OnInit, AfterViewInit {
   pending: boolean;
@@ -123,31 +125,16 @@ export class TableComponent implements OnInit, AfterViewInit {
     }, 0);
   }
 
-  start: any = undefined;
-  pressed: boolean = false;
-  startX: any;
-  startWidth: any;
-
-
-  resizeTable(event: any, column: any) {
-    this.start = event.target;
-    this.pressed = true;
-    this.startX = event.pageX;
-    this.startWidth = this.start.clientWidth;
-    this.mouseMove(column);
-  }
-
-
-  resizableFnMousemove(event, column) {
-    column.width = this.startWidth + (event.pageX - this.startX);
-    let index = this.start.cellIndex;
-  }
-
-  mouseMove(column: any) {
-    const moveFn = (event) => this.resizableFnMousemove(event, column);
-    const upFn = (event) => {
-      this.pressed = false;
+  resizeTable(event, column) {
+    const target = event.target.parentElement;
+    const startX = event.pageX;
+    const startWidth = target.clientWidth;
+    const moveFn = (ev: any) => {
+      column.width = startWidth + (ev.pageX - startX) + 'px';
+    };
+    const upFn = () => {
       document.removeEventListener('mousemove', moveFn);
+      document.removeEventListener('mouseup', upFn);
     };
 
     document.addEventListener('mousemove', moveFn);

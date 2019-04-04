@@ -42,4 +42,23 @@
   cdk-virtual-scroll-viewport {
     height: 100%;
   }
+  mat-header-cell{
+      &:hover{
+        .resizeDiv{
+          display: inline;
+        }
+      }
+    .resizeDiv{
+      display: none;
+      &:hover{
+        cursor: col-resize;
+      }
+      margin: 0 5px 0 5px;
+      border-left: dashed;  
+    }
+
+  }
+.mat-sort-header-container{
+  height: 100%;
+}
 }
