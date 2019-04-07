@@ -69,9 +69,10 @@ export class TableComponent implements OnInit, AfterViewInit {
   dataSource: GridTableDataSource;
   offset: number;
   private _columnsDef: ColumnDef[];
-
+  private inMove = false;
   private _rows: any[];
   @Input() isFilterable = true;
+  @Input() isResizable = true;
   @Input() filterPlaceholder = 'Filter';
   @Input() itemSize = 47;
   @Input() headerSize = 56;
@@ -134,7 +135,8 @@ export class TableComponent implements OnInit, AfterViewInit {
     return e.clientX - rect.left;
   }
   resizeTable(event, i) {
-    if (!this.isResizeActive) { return; }
+    if (this.inMove || !this.isResizeActive) { return; }
+    this.inMove = true;
     const cells = this.headerCells.toArray();
     const el = cells[i].nativeElement;
     const elStartWidth = el.clientWidth;
@@ -156,33 +158,31 @@ export class TableComponent implements OnInit, AfterViewInit {
       const currentX = ev.pageX;
       const offset = (currentX - startX);
 
-      if (elNextStartWidth - (offset * op) <= 0 || (elStartWidth + (offset * op)) <= 0) { return; }
+      //if (elNextStartWidth - (offset * op) <= 0 || (elStartWidth + (offset * op)) <= 0) { return; }
       this.columnsDef[i].width = (elStartWidth + (offset * op)) + 'px';
       this.columnsDef[elNextIndex].width = (elNextStartWidth - (offset * op)) + 'px';
     };
     const upFn = () => {
+      this.inMove = false;
       document.removeEventListener('mousemove', moveFn);
       document.removeEventListener('mouseup', upFn);
     };
-
     document.addEventListener('mousemove', moveFn);
     document.addEventListener('mouseup', upFn);
   }
 
-  mousemove(ev) {
+  mousemove(ev, i) {
+    if (!this.isResizable) { return; }
     ev.target.style.cursor = 'pointer';
+    this.isResizeActive = false;
+    if (i === this.columnsDef.length - 1) { return; }
 
-    if (ev.target.tagName === 'BUTTON') { return; }
-    const el = ev.currentTarget.children[0];
-    const elStartWidth = el.clientWidth;
-    const startTargetX = this.getTargetX(ev);
-    //el.style.cursor = 'pointer';
-    if (elStartWidth - startTargetX < 3 || startTargetX < 3) {
+    const el = ev.currentTarget;
+    const elWidth = el.clientWidth;
+    const x = this.getTargetX(ev);
+    if (elWidth - x < 10) {
       ev.target.style.cursor = 'col-resize';
       this.isResizeActive = true;
-    } else {
-      ev.target.style.cursor = 'pointer';
-      this.isResizeActive = false;
     }
   }
 }
