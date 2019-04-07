@@ -16,7 +16,7 @@ import { distinctUntilChanged, debounceTime } from 'rxjs/operators';
 
 import { fromEvent, BehaviorSubject } from 'rxjs';
 import { GridTableDataSource } from './data-source';
-import { MatSort, MatHeaderCell } from '@angular/material';
+import { MatSort } from '@angular/material';
 import { ColumnDef as _columnsDef } from './table.interfaces';
 import { orderBy, keyBy } from 'lodash';
 import { PCellDef } from './PCellDef';
@@ -44,6 +44,20 @@ export class CustomVirtualScrollStrategy extends FixedSizeVirtualScrollStrategy 
   encapsulation: ViewEncapsulation.None,
 })
 export class TableComponent implements OnInit, AfterViewInit {
+  @Input() set columnsDef(columns: ColumnDef[]) {
+    this._columnsDef = columns;
+    this.columns = this.columnsDef.map(c => c.field);
+  }
+  get columnsDef() { return this._columnsDef; }
+  @Input() set rows(rows: any[]) {
+    if (!rows) { return; }
+    this._rows = rows || [];
+    if (!this.columnsDef) {
+      this.columnsDef = Object.keys(this._rows[0]).map(key => { return { field: key, title: key } as ColumnDef; });
+    }
+    this.initDatasource();
+  }
+  get rows() { return this._rows || []; }
   pending: boolean;
   sticky = true;
   @ViewChild(CdkVirtualScrollViewport) viewport: CdkVirtualScrollViewport;
@@ -55,27 +69,15 @@ export class TableComponent implements OnInit, AfterViewInit {
   dataSource: GridTableDataSource;
   offset: number;
   private _columnsDef: ColumnDef[];
-  @Input() set columnsDef(columns: ColumnDef[]) {
-    this._columnsDef = columns;
-    this.columns = this.columnsDef.map(c => c.field);
-  }
-  get columnsDef() { return this._columnsDef; }
 
   private _rows: any[];
-  @Input() set rows(rows: any[]) {
-    if (!rows) { return; }
-    this._rows = rows || [];
-    if (!this.columnsDef) {
-      this.columnsDef = Object.keys(this._rows[0]).map(key => { return { field: key, title: key } as ColumnDef; });
-    }
-    this.initDatasource();
-  }
-  get rows() { return this._rows || []; }
   @Input() isFilterable = true;
   @Input() filterPlaceholder = 'Filter';
   @Input() itemSize = 47;
   @Input() headerSize = 56;
   columns: string[];
+
+  isResizeActive = false;
   ngOnInit() {
 
   }
@@ -127,18 +129,36 @@ export class TableComponent implements OnInit, AfterViewInit {
       });
     }, 0);
   }
-
-  resizeTable(i) {
+  private getTargetX(e) {
+    const rect = e.currentTarget.getBoundingClientRect();
+    return e.clientX - rect.left;
+  }
+  resizeTable(event, i) {
+    if (!this.isResizeActive) { return; }
     const cells = this.headerCells.toArray();
     const el = cells[i].nativeElement;
-    const elNext = cells[i + 1] ? cells[i + 1].nativeElement : undefined;
-    const startX = el.pageX;
+    const elStartWidth = el.clientWidth;
+    const startTargetX = this.getTargetX(event);
+    let op = 1;
+
+    const startX = event.pageX;
+    let elNextIndex;
+    if (startTargetX > 20) {
+      if (!cells[i + 1]) { return; }
+      elNextIndex = i + 1;
+    } else {
+      if (!cells[i - 1]) { return; }
+      elNextIndex = i - 1;
+      op = -1;
+    }
+    const elNextStartWidth = cells[elNextIndex].nativeElement.clientWidth;
     const moveFn = (ev: any) => {
-      const offset = ev.pageX - startX;
-      this.columnsDef[i].width = (el.clientWidth + offset) + 'px';
-      if (elNext) {
-        this.columnsDef[i + 1].width = (elNext.clientWidth - offset) + 'px';
-      }
+      const currentX = ev.pageX;
+      const offset = (currentX - startX);
+
+      if (elNextStartWidth - (offset * op) <= 0 || (elStartWidth + (offset * op)) <= 0) { return; }
+      this.columnsDef[i].width = (elStartWidth + (offset * op)) + 'px';
+      this.columnsDef[elNextIndex].width = (elNextStartWidth - (offset * op)) + 'px';
     };
     const upFn = () => {
       document.removeEventListener('mousemove', moveFn);
@@ -149,4 +169,20 @@ export class TableComponent implements OnInit, AfterViewInit {
     document.addEventListener('mouseup', upFn);
   }
 
+  mousemove(ev) {
+    ev.target.style.cursor = 'pointer';
+
+    if (ev.target.tagName === 'BUTTON') { return; }
+    const el = ev.currentTarget.children[0];
+    const elStartWidth = el.clientWidth;
+    const startTargetX = this.getTargetX(ev);
+    //el.style.cursor = 'pointer';
+    if (elStartWidth - startTargetX < 3 || startTargetX < 3) {
+      ev.target.style.cursor = 'col-resize';
+      this.isResizeActive = true;
+    } else {
+      ev.target.style.cursor = 'pointer';
+      this.isResizeActive = false;
+    }
+  }
 }
