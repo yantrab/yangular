@@ -8,7 +8,8 @@ import {
   QueryList,
   AfterViewInit,
   ViewEncapsulation,
-  ViewChildren
+  ViewChildren,
+  ChangeDetectionStrategy
 } from '@angular/core';
 
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
@@ -42,6 +43,7 @@ export class CustomVirtualScrollStrategy extends FixedSizeVirtualScrollStrategy 
   styleUrls: ['./table.component.scss'],
   providers: [{ provide: VIRTUAL_SCROLL_STRATEGY, useClass: CustomVirtualScrollStrategy }],
   encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TableComponent implements OnInit, AfterViewInit {
   @Input() set columnsDef(columns: ColumnDef[]) {
@@ -63,13 +65,17 @@ export class TableComponent implements OnInit, AfterViewInit {
   @ViewChild(CdkVirtualScrollViewport) viewport: CdkVirtualScrollViewport;
   @ViewChild(MatSort) matSort: MatSort;
   @ViewChild('filter') filter: ElementRef;
-  @ViewChildren('headercell') headerCells: QueryList<ElementRef>;
+  _headerCells: ElementRef[];
+  @ViewChildren('headercell') set headerCells(cells) {
+    this._headerCells = cells.toArray();
+  }
+
   @ContentChildren(PCellDef) _CellDefs: QueryList<PCellDef>;
   filterChange = new BehaviorSubject('');
   dataSource: GridTableDataSource;
   offset: number;
   private _columnsDef: ColumnDef[];
-  private inMove = false;
+  inMove = false;
   private _rows: any[];
   @Input() isFilterable = true;
   @Input() isResizable = true;
@@ -137,35 +143,21 @@ export class TableComponent implements OnInit, AfterViewInit {
   resizeTable(event, i) {
     if (this.inMove || !this.isResizeActive) { return; }
     this.inMove = true;
-    const cells = this.headerCells.toArray();
+    const cells = this._headerCells;
     const el = cells[i].nativeElement;
     const elStartWidth = el.clientWidth;
-    const startTargetX = this.getTargetX(event);
-    let op = 1;
-
     const startX = event.pageX;
-    let elNextIndex;
-    if (startTargetX > 20) {
-      if (!cells[i + 1]) { return; }
-      elNextIndex = i + 1;
-    } else {
-      if (!cells[i - 1]) { return; }
-      elNextIndex = i - 1;
-      op = -1;
-    }
+    const elNextIndex = i + 1;
     const elNextStartWidth = cells[elNextIndex].nativeElement.clientWidth;
     const moveFn = (ev: any) => {
-      const currentX = ev.pageX;
-      const offset = (currentX - startX);
-
-      //if (elNextStartWidth - (offset * op) <= 0 || (elStartWidth + (offset * op)) <= 0) { return; }
-      this.columnsDef[i].width = (elStartWidth + (offset * op)) + 'px';
-      this.columnsDef[elNextIndex].width = (elNextStartWidth - (offset * op)) + 'px';
+      const offset = (ev.pageX - startX);
+      this.columnsDef[i].width = elStartWidth + offset + 'px';
+      this.columnsDef[elNextIndex].width = elNextStartWidth - offset + 'px';
     };
     const upFn = () => {
-      this.inMove = false;
       document.removeEventListener('mousemove', moveFn);
       document.removeEventListener('mouseup', upFn);
+      this.inMove = false;
     };
     document.addEventListener('mousemove', moveFn);
     document.addEventListener('mouseup', upFn);
@@ -176,7 +168,7 @@ export class TableComponent implements OnInit, AfterViewInit {
     ev.target.style.cursor = 'pointer';
     this.isResizeActive = false;
     if (i === this.columnsDef.length - 1) { return; }
-
+    if (this.isResizeActive) { return; }
     const el = ev.currentTarget;
     const elWidth = el.clientWidth;
     const x = this.getTargetX(ev);
