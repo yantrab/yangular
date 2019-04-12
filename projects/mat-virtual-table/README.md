@@ -47,6 +47,9 @@ export class ComponentsModule { }
 ```
 [example](https://stackblitz.com/edit/mat-virtual-table-special-cells?file=src/app/app.component.html)
 
+### Resizing columns
+resize column with [rtl support](https://stackblitz.com/edit/mat-virtual-table-resize?file=src%2Findex.html).
+
 ### Api
 ```typescript
 @Input() rows; // table rows.
