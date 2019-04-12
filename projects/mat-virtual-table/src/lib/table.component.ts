@@ -62,6 +62,7 @@ export class TableComponent implements OnInit, AfterViewInit {
   get rows() { return this._rows || []; }
   pending: boolean;
   sticky = true;
+  dir: 'ltr' | 'rtl' = 'ltr';
   @ViewChild(CdkVirtualScrollViewport) viewport: CdkVirtualScrollViewport;
   @ViewChild(MatSort) matSort: MatSort;
   @ViewChild('filter') filter: ElementRef;
@@ -135,6 +136,11 @@ export class TableComponent implements OnInit, AfterViewInit {
         this.columnsDef.find(c => c.field === columnDef.columnName).template = columnDef.template;
       });
     }, 0);
+
+    if (window.getComputedStyle(this.filter.nativeElement).direction === 'rtl') {
+      this.dir = -1;
+    }
+
   }
   private getTargetX(e) {
     const rect = e.currentTarget.getBoundingClientRect();
@@ -147,7 +153,7 @@ export class TableComponent implements OnInit, AfterViewInit {
     const el = cells[i].nativeElement;
     const elStartWidth = el.clientWidth;
     const startX = event.pageX;
-    const elNextIndex = i + 1;
+    const elNextIndex = this.dir === 'ltr' ? i + 1 : i - 1;
     const elNextStartWidth = cells[elNextIndex].nativeElement.clientWidth;
     const moveFn = (ev: any) => {
       const offset = (ev.pageX - startX);

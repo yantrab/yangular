@@ -24,6 +24,12 @@
       ],
       "mat-virtual-table/*": [
         "dist/mat-virtual-table/*"
+      ],
+      "dyna-form": [
+        "dist/dyna-form"
+      ],
+      "dyna-form/*": [
+        "dist/dyna-form/*"
       ]
     }
   }

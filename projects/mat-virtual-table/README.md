@@ -53,7 +53,7 @@ export class ComponentsModule { }
 @Input() columnsDef; // columns definitions. each column it could be define title, isSortable, and isFilterable.
 @Input() isFilterable = true; // true by default, and filter all columns, Unless otherwise specified in the columnsDef.
 @Input() filterPlaceholder = 'Filter';  
-@Input() isResizable = true;
+@Input() isResizable = true; // true by default, rtl support. be aware that there is performace issue without build with prod mode.
 ```
 
 
