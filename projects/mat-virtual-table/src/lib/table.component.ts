@@ -137,9 +137,7 @@ export class TableComponent implements OnInit, AfterViewInit {
       });
     }, 0);
 
-    if (window.getComputedStyle(this.filter.nativeElement).direction === 'rtl') {
-      this.dir = -1;
-    }
+    this.dir = window.getComputedStyle(this.filter.nativeElement).direction as any;
 
   }
   private getTargetX(e) {
