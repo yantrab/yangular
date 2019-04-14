@@ -50,9 +50,9 @@
     //border-right: 3px dashed ;
     //margin-left: -3px;
     &:hover {
-     // border-left: 0.5px dashed;
-     // border-right: 0.5px dashed ;
-     
+      // border-left: 0.5px dashed;
+      // border-right: 0.5px dashed ;
+
       .resizeDiv {
         display: inline;
       }
@@ -71,14 +71,22 @@
   }
 }
 
-// [dir="rtl"] #table {
-//   mat-header-cell {
-//     margin-left: -0.5px;
-//   }
-// }
+[dir="rtl"] #table {
+    mat-header-row {
+      &:hover {
+        mat-header-cell {
+          border-left: 0.5px dashed;
+        }
+      }
+  }
+}
 
-// [dir="ltr"] #table {
-//   mat-header-cell {
-//     margin-right: -0.5px;
-//   }
-// }
+[dir="ltr"] #table {
+  mat-header-row {
+    &:hover {
+      mat-header-cell {
+        border-right: 0.5px dashed;
+      }
+    }
+  }
+}

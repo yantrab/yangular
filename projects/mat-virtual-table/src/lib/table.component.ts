@@ -145,16 +145,17 @@ export class TableComponent implements OnInit, AfterViewInit {
     return e.clientX - rect.left;
   }
   resizeTable(event, i) {
-    if (this.inMove || !this.isResizeActive) { return; }
-    this.inMove = true;
     const cells = this._headerCells;
+    const elNextIndex = i + 1;
+    if (this.inMove || !this.isResizeActive || !cells[elNextIndex]) { return; }
+    this.inMove = true;
     const el = cells[i].nativeElement;
     const elStartWidth = el.clientWidth;
     const startX = event.pageX;
-    const elNextIndex = this.dir === 'ltr' ? i + 1 : i - 1;
+    const dir = this.dir === 'ltr' ? 1 : -1;
     const elNextStartWidth = cells[elNextIndex].nativeElement.clientWidth;
     const moveFn = (ev: any) => {
-      const offset = (ev.pageX - startX);
+      const offset = (ev.pageX - startX) * dir;
       this.columnsDef[i].width = elStartWidth + offset + 'px';
       this.columnsDef[elNextIndex].width = elNextStartWidth - offset + 'px';
     };
@@ -168,14 +169,15 @@ export class TableComponent implements OnInit, AfterViewInit {
   }
 
   mousemove(ev, i) {
-    if (!this.isResizable) { return; }
-    ev.target.style.cursor = 'pointer';
+    if (!this.isResizable || this.inMove) { return; }
     this.isResizeActive = false;
-    if (i === this.columnsDef.length - 1) { return; }
-    if (this.isResizeActive) { return; }
+    ev.target.style.cursor = 'pointer';
     const el = ev.currentTarget;
     const elWidth = el.clientWidth;
-    const x = this.getTargetX(ev);
+    let x = this.getTargetX(ev);
+    if (this.dir === 'rtl') {
+      x = elWidth - x;
+    }
     if (elWidth - x < 10) {
       ev.target.style.cursor = 'col-resize';
       this.isResizeActive = true;
