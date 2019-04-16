@@ -13,5 +13,7 @@ export class AppComponent implements OnInit {
     }, 1000);
   }
   title = 'mat-virtual-table';
-  rows: any = Array(1).fill(0).map((x, i) => { return { name: 'name' + i, id: i, name2: 'name' + i, id2: i } });
+  rows: any = Array(500000).fill(0).map((x, i) => { return { name: 'name' + i, id: i, name2: 'name' + i, id2: i,
+   long:'fdsasdfdsasdfdsasdfdsasdfdsasdf',
+  long3:'fdsasdfdsasdfdsasdfdsasdfdsasdf' } });
 }

@@ -3,4 +3,5 @@ export interface ColumnDef {
     title?: string;
     isSortable?: boolean;
     isFilterable?: boolean;
+    width?: string;
 }

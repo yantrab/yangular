@@ -53,7 +53,7 @@ resize column with [rtl support](https://stackblitz.com/edit/mat-virtual-table-r
 ### Api
 ```typescript
 @Input() rows; // table rows.
-@Input() columnsDef; // columns definitions. each column it could be define title, isSortable, and isFilterable.
+@Input() columnsDef; // columns definitions. each column it could be define title, isSortable, isFilterable, and width. default width is calculated by max value length.
 @Input() isFilterable = true; // true by default, and filter all columns, Unless otherwise specified in the columnsDef.
 @Input() filterPlaceholder = 'Filter';  
 @Input() isResizable = true; // true by default, rtl support. be aware that there is performace issue without build with production mode.

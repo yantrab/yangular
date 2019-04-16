@@ -19,12 +19,11 @@ import { fromEvent, BehaviorSubject } from 'rxjs';
 import { GridTableDataSource } from './data-source';
 import { MatSort } from '@angular/material';
 import { ColumnDef as _columnsDef } from './table.interfaces';
-import { orderBy, keyBy } from 'lodash';
+import { orderBy, keyBy, max, sumBy } from 'lodash';
 import { PCellDef } from './PCellDef';
 import { FixedSizeVirtualScrollStrategy, VIRTUAL_SCROLL_STRATEGY } from '@angular/cdk/scrolling';
 interface ColumnDef extends _columnsDef {
   template?;
-  width?: string;
 }
 
 export class CustomVirtualScrollStrategy extends FixedSizeVirtualScrollStrategy {
@@ -55,8 +54,22 @@ export class TableComponent implements OnInit, AfterViewInit {
     if (!rows) { return; }
     this._rows = rows || [];
     if (!this.columnsDef) {
-      this.columnsDef = Object.keys(this._rows[0]).map(key => { return { field: key, title: key } as ColumnDef; });
+      this.columnsDef = Object.keys(this._rows[0]).map(key => ({ field: key, title: key } as ColumnDef));
     }
+
+
+    const widths = {};
+    this.columnsDef.forEach((c, i) => {
+      widths[c.field] =
+        c.width || (max(rows.map(r => r[c.field] === undefined ? 20 : r[c.field].toString().length)) * 8.1 + (i === 0 ? 30 : 6));
+    });
+
+    const extra = this.viewport.elementRef.nativeElement.clientWidth - sumBy(Object.values(widths)) - 20;
+    if (extra > 0) {
+      const toAdd = extra / this.columnsDef.length;
+      this.columnsDef.forEach(c => widths[c.field] += toAdd);
+    }
+    this.columnsDef.forEach(c => c.width = widths[c.field] + 'px');
     this.initDatasource();
   }
   get rows() { return this._rows || []; }
@@ -118,7 +131,12 @@ export class TableComponent implements OnInit, AfterViewInit {
           setTimeout(() => {
             this.dataSource.allData =
               this.rows.filter(row => (row.query as string).indexOf(' ' + this.filter.nativeElement.value) !== -1);
-            setTimeout(() => this.pending = false, 0);
+            if (this.dataSource.allData.length < 50) {
+              this.dataSource.allData =
+                this.rows.filter(row => (row.query as string).indexOf(this.filter.nativeElement.value) !== -1);
+            }
+
+            this.pending = false;
           }, 200);
         });
     }
@@ -127,7 +145,7 @@ export class TableComponent implements OnInit, AfterViewInit {
       this.pending = true;
       setTimeout(() => {
         this.dataSource.allData = orderBy(this.rows, this.matSort.active, this.matSort.direction as any);
-        setTimeout(() => this.pending = false, 0);
+        this.pending = false;
       }, 200);
     });
 
