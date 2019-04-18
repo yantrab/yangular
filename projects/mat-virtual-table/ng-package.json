@@ -3,5 +3,9 @@
   "dest": "../../dist/mat-virtual-table",
   "lib": {
     "entryFile": "src/public-api.ts"
-  }
+  },
+  "whitelistedNonPeerDependencies": [
+    "lodash",
+    "@angular/flex-layout"
+  ]
 }

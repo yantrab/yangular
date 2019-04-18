@@ -62,7 +62,7 @@ export class TableComponent implements OnInit, AfterViewInit {
     const widths = {};
     this.columnsDef.forEach((c, i) => {
       widths[c.field] =
-        c.width || (max(rows.map(r => r[c.field] === undefined ? 20 : r[c.field].toString().length)) * 8.1 + (i === 0 ? 30 : 6));
+        (max(rows.map(r => !r[c.field] ? 20 : r[c.field].toString().length)) * 8.1 + (i === 0 ? 30 : 6));
     });
 
     const extra = this.viewport.elementRef.nativeElement.clientWidth - sumBy(Object.values(widths)) - 20;
@@ -70,7 +70,7 @@ export class TableComponent implements OnInit, AfterViewInit {
       const toAdd = extra / this.columnsDef.length;
       this.columnsDef.forEach(c => widths[c.field] += toAdd);
     }
-    this.columnsDef.forEach(c => c.width = widths[c.field] + 'px');
+    this.columnsDef.forEach(c => c.width = c.width || (widths[c.field] + 'px'));
     this.initDatasource();
   }
   get rows() { return this._rows || []; }
