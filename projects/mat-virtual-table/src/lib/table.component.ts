@@ -78,7 +78,16 @@ export class TableComponent implements OnInit, AfterViewInit {
   sticky = true;
   dir: 'ltr' | 'rtl' = 'ltr';
   @ViewChild(CdkVirtualScrollViewport) viewport: CdkVirtualScrollViewport;
-  @ViewChild(MatSort) matSort: MatSort;
+  @ViewChild(MatSort) set matSort(matSort: MatSort) {
+    if (!matSort) { return; }
+    matSort.sortChange.subscribe(() => {
+      this.pending = true;
+      setTimeout(() => {
+        this.dataSource.allData = orderBy(this.rows, matSort.active, matSort.direction as any);
+        this.pending = false;
+      }, 200);
+    });
+  }
   @ViewChild('filter') filter: ElementRef;
   _headerCells: ElementRef[];
   @ViewChildren('headercell') set headerCells(cells) {
@@ -147,14 +156,6 @@ export class TableComponent implements OnInit, AfterViewInit {
           }, 200);
         });
     }
-
-    this.matSort.sortChange.subscribe(() => {
-      this.pending = true;
-      setTimeout(() => {
-        this.dataSource.allData = orderBy(this.rows, this.matSort.active, this.matSort.direction as any);
-        this.pending = false;
-      }, 200);
-    });
 
     setTimeout(() => {
       this._CellDefs.forEach(columnDef => {

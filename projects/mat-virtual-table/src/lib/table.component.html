@@ -34,7 +34,7 @@
 			<mat-row *matRowDef="let row; columns: columns"></mat-row>
 		</mat-table>
 	</cdk-virtual-scroll-viewport>
-	<mat-paginator *ngIf="paginator"
+	<mat-paginator *ngIf="dataSource && paginator"
 	         [hidePageSize]="true"
 			 [length]="this.dataSource.allData.length" 
 			 [pageSize]="pageSize"

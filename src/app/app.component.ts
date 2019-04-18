@@ -8,13 +8,8 @@ import { ColumnDef } from 'projects/mat-virtual-table/src/public-api';
 })
 export class AppComponent implements OnInit {
   title = 'mat-virtual-table';
-  rows: any = Array(500000).fill(0).map((x, i) => {
-    return {
-      name: 'name' + i, id: i, name2: 'name' + i, id2: i,
-      long: 'fdsasdfdsasdfdsasdfdsasdfdsasdf',
-      long3: 'fdsasdfdsasdfdsasdfdsasdfdsasdf'
-    };
-  });
+  rows: any;
+  
   columns: ColumnDef[] = [
     { field: 'name' },
     { field: 'name2', title: 'שם', width: '10px' },
@@ -23,7 +18,13 @@ export class AppComponent implements OnInit {
   ];
   ngOnInit(): void {
     setTimeout(() => {
-      //this.rows = Array(500000).fill(0).map((x, i) => { return { name: 'name' + i, id: i, } });;
+      this.rows = Array(500000).fill(0).map((x, i) => {
+    return {
+      name: 'name' + i, id: i, name2: 'name' + i, id2: i,
+      long: 'fdsasdfdsasdfdsasdfdsasdfdsasdf',
+      long3: 'fdsasdfdsasdfdsasdfdsasdfdsasdf'
+    };
+  });
     }, 1000);
   }
 }
