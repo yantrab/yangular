@@ -9,7 +9,8 @@ import {
   MatInputModule,
   MatFormFieldModule,
   MatProgressBarModule,
-  MatSortModule
+  MatSortModule,
+  MatPaginatorModule
 } from '@angular/material';
 
 const components = [TableComponent, PCellDef];
@@ -19,6 +20,7 @@ const modules = [
   MatFormFieldModule,
   MatProgressBarModule,
   MatSortModule,
+  MatPaginatorModule
 ];
 @NgModule({
   declarations: components,

@@ -17,7 +17,7 @@ import { distinctUntilChanged, debounceTime } from 'rxjs/operators';
 
 import { fromEvent, BehaviorSubject } from 'rxjs';
 import { GridTableDataSource } from './data-source';
-import { MatSort } from '@angular/material';
+import { MatSort, MatPaginator } from '@angular/material';
 import { ColumnDef as _columnsDef } from './table.interfaces';
 import { orderBy, keyBy, max, sumBy } from 'lodash';
 import { PCellDef } from './PCellDef';
@@ -37,6 +37,7 @@ export class CustomVirtualScrollStrategy extends FixedSizeVirtualScrollStrategy 
 
 
 @Component({
+  // tslint:disable-next-line: component-selector
   selector: 'mat-virtual-table',
   templateUrl: './table.component.html',
   styleUrls: ['./table.component.scss'],
@@ -96,6 +97,8 @@ export class TableComponent implements OnInit, AfterViewInit {
   @Input() filterPlaceholder = 'Filter';
   @Input() itemSize = 47;
   @Input() headerSize = 56;
+  @Input() pageSize = 50;
+  @Input() paginator: boolean;
   columns: string[];
 
   isResizeActive = false;
@@ -105,7 +108,7 @@ export class TableComponent implements OnInit, AfterViewInit {
 
   initDatasource() {
     if (!this.dataSource) {
-      this.dataSource = new GridTableDataSource(this.rows, this.viewport, this.itemSize);
+      this.dataSource = new GridTableDataSource(this.rows, this.viewport, this.itemSize, this.pageSize);
     }
     this.dataSource.allData = this.rows;
     if (this.isFilterable || this.columnsDef.some(c => c.isFilterable)) {
@@ -122,6 +125,10 @@ export class TableComponent implements OnInit, AfterViewInit {
       }
     }
   }
+  changePage(page) {
+    this.viewport.scrollToOffset(page.pageIndex * page.pageSize * this.itemSize + this.headerSize)
+  }
+
   ngAfterViewInit(): void {
     if (this.isFilterable || this.columnsDef.some(c => c.isFilterable)) {
       fromEvent(this.filter.nativeElement, 'keyup')

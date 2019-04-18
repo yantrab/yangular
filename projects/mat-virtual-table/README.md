@@ -50,6 +50,33 @@ export class ComponentsModule { }
 ### Resizing columns
 resize column with [rtl support](https://stackblitz.com/edit/mat-virtual-table-resize?file=src%2Findex.html).
 
+### Pagination
+Set paginator true to add paginator.
+```typescript
+<mat-virtual-table [rows]="rows" [paginator]="true">
+</mat-virtual-table>
+```
+
+to custom lables, use ```CustomMatPaginatorIntl```:
+```typescript
+export class CustomMatPaginatorIntl extends MatPaginatorIntl {
+  nextPageLabel = 'הבא';
+  previousPageLabel = 'קודם';
+  getRangeLabel = (page, pageSize, length) => {
+    if (length === 0 || pageSize === 0) {
+      return '0 מתוך ' + length;
+    }
+    length = Math.max(length, 0);
+    const startIndex = page * pageSize;
+    const endIndex = startIndex < length ?
+      Math.min(startIndex + pageSize, length) :
+      startIndex + pageSize;
+    return startIndex + 1 + ' - ' + endIndex + ' מתוך ' + length;
+  };
+}
+[example](https://stackblitz.com/edit/mat-virtual-table-paginator?file=src%2Fapp%2Fapp.module.ts).
+```
+
 ### Api
 ```typescript
 @Input() rows; // table rows.
@@ -57,6 +84,10 @@ resize column with [rtl support](https://stackblitz.com/edit/mat-virtual-table-r
 @Input() isFilterable = true; // true by default, and filter all columns, Unless otherwise specified in the columnsDef.
 @Input() filterPlaceholder = 'Filter';  
 @Input() isResizable = true; // true by default, rtl support. be aware that there is performace issue without build with production mode.
+@Input() itemSize = 47;
+@Input() headerSize = 56;
+@Input() pageSize = 50;
+@Input() paginator: boolean;
 ```
 
 

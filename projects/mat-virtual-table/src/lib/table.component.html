@@ -5,7 +5,8 @@
 	<cdk-virtual-scroll-viewport fxFlex>
 		<mat-table matSort *ngIf="dataSource" [dataSource]="dataSource">
 			<ng-container *ngFor="let column of columnsDef;let i = index" matColumnDef="{{ column.field }}">
-				<mat-header-cell #headercell (mousemove)="mousemove($event,i)" (mousedown)="resizeTable($event, i)" fxLayout="row" fxLayoutAlign="space-between stretch" [fxFlex]="column.width" *matHeaderCellDef>
+				<mat-header-cell #headercell (mousemove)="mousemove($event,i)" (mousedown)="resizeTable($event, i)"
+					fxLayout="row" fxLayoutAlign="space-between stretch" [fxFlex]="column.width" *matHeaderCellDef>
 					<div fxFlex [disabled]="column.isSortable === false || isResizeActive || inMove" mat-sort-header>
 						{{ column.title || column.field }}
 					</div>
@@ -31,7 +32,13 @@
 				[style.top.px]="dataSource?.offset + headerSize">
 			</mat-header-row>
 			<mat-row *matRowDef="let row; columns: columns"></mat-row>
-
 		</mat-table>
 	</cdk-virtual-scroll-viewport>
+	<mat-paginator *ngIf="paginator"
+	         [hidePageSize]="true"
+			 [length]="this.dataSource.allData.length" 
+			 [pageSize]="pageSize"
+			 [pageIndex]="this.dataSource.pageIndex"
+			 (page)="changePage($event)"></mat-paginator>
+
 </div>

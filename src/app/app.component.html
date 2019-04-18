@@ -1,6 +1,6 @@
 <!-- some tags with dir attribute -->
-<mat-virtual-table dir="rtl" style="height:500px;" [rows]="rows">
-    <ng-template pCellDef column="name" let-row="row">
+<mat-virtual-table dir="rtl" style="height:500px;" [rows]="rows" [paginator]="true">
+    <ng-template pCellDef column="name" let-row="row" >
         <b> {{row.name}} </b>
     </ng-template>
 </mat-virtual-table>
