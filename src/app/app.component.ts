@@ -9,20 +9,23 @@ import { ColumnDef } from 'projects/mat-virtual-table/src/public-api';
 export class AppComponent implements OnInit {
   title = 'mat-virtual-table';
   rows: any;
-  
   columns: ColumnDef[] = [
     { field: 'name' },
-    { field: 'name2', title: 'שם', width: '10px' },
+    { field: 'name2', title: 'שם' },
     { field: 'long' },
-    { field: 'long3' },
+    { field: 'long2' },
+   // { field: 'long3' },
+   // { field: 'long4' },
   ];
   ngOnInit(): void {
     setTimeout(() => {
       this.rows = Array(500000).fill(0).map((x, i) => {
     return {
-      name: 'name' + i, id: i, name2: 'name' + i, id2: i,
-      long: 'fdsasdfdsasdfdsasdfdsasdfdsasdf',
-      long3: 'fdsasdfdsasdfdsasdfdsasdfdsasdf'
+      name: 'name' + i, id: i, name2: 'long nameeeeeee' + i, id2: i,
+      long: 'long long long long long long',
+      long2: 'long long long long long long',
+    //  long3: 'long long long long long long',
+     // long4: 'long long long long long long',
     };
   });
     }, 1000);

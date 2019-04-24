@@ -1,5 +1,5 @@
-# MatVirtualTable
-Virtual scroll table based on angualr material, with sticky columns, filtering ,sorting and resizing columns.
+# Virtaul scroll angular material table
+Virtual scroll table based on angular material, with sticky columns, filtering ,sorting and resizing columns.
 
 ## Getting Started
 
@@ -74,8 +74,8 @@ export class CustomMatPaginatorIntl extends MatPaginatorIntl {
     return startIndex + 1 + ' - ' + endIndex + ' מתוך ' + length;
   };
 }
-[example](https://stackblitz.com/edit/mat-virtual-table-paginator?file=src%2Fapp%2Fapp.module.ts).
 ```
+[example](https://stackblitz.com/edit/mat-virtual-table-paginator?file=src%2Fapp%2Fapp.module.ts).
 
 ### Api
 ```typescript

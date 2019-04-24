@@ -9,7 +9,8 @@ import {
   AfterViewInit,
   ViewEncapsulation,
   ViewChildren,
-  ChangeDetectionStrategy
+  ChangeDetectionStrategy,
+  HostListener
 } from '@angular/core';
 
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
@@ -58,11 +59,17 @@ export class TableComponent implements OnInit, AfterViewInit {
       this.columnsDef = Object.keys(this._rows[0]).map(key => ({ field: key, title: key } as ColumnDef));
     }
 
+    this.initColumnsWidth();
 
+    this.initDatasource();
+  }
+  @HostListener('window:resize', ['$event'])
+  initColumnsWidth(event?) {
     const widths = {};
     this.columnsDef.forEach((c, i) => {
       widths[c.field] =
-        (max(rows.map(r => !r[c.field] ? 20 : r[c.field].toString().length)) * 8.1 + (i === 0 ? 30 : 6));
+        (max(this.rows.slice(0, this.pageSize)
+          .map(r => !r[c.field] ? 20 : r[c.field].toString().length)) * 8.1 + (i === 0 ? 30 : 6));
     });
 
     const extra = this.viewport.elementRef.nativeElement.clientWidth - sumBy(Object.values(widths)) - 20;
@@ -70,16 +77,17 @@ export class TableComponent implements OnInit, AfterViewInit {
       const toAdd = extra / this.columnsDef.length;
       this.columnsDef.forEach(c => widths[c.field] += toAdd);
     }
-    this.columnsDef.forEach(c => c.width = c.width || (widths[c.field] + 'px'));
-    this.initDatasource();
+    this.columnsDef.forEach(c => c.width = c.width && !event ? c.width : (widths[c.field] + 'px'));
   }
   get rows() { return this._rows || []; }
   pending: boolean;
   sticky = true;
   dir: 'ltr' | 'rtl' = 'ltr';
   @ViewChild(CdkVirtualScrollViewport) viewport: CdkVirtualScrollViewport;
+  _matSort: MatSort;
   @ViewChild(MatSort) set matSort(matSort: MatSort) {
-    if (!matSort) { return; }
+    if (!matSort || this._matSort) { return; }
+    this._matSort = matSort;
     matSort.sortChange.subscribe(() => {
       this.pending = true;
       setTimeout(() => {
@@ -135,7 +143,7 @@ export class TableComponent implements OnInit, AfterViewInit {
     }
   }
   changePage(page) {
-    this.viewport.scrollToOffset(page.pageIndex * page.pageSize * this.itemSize + this.headerSize)
+    this.viewport.scrollToOffset(page.pageIndex * page.pageSize * this.itemSize + this.headerSize);
   }
 
   ngAfterViewInit(): void {

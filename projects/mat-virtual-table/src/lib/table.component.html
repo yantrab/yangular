@@ -7,7 +7,7 @@
 			<ng-container *ngFor="let column of columnsDef;let i = index" matColumnDef="{{ column.field }}">
 				<mat-header-cell #headercell (mousemove)="mousemove($event,i)" (mousedown)="resizeTable($event, i)"
 					fxLayout="row" fxLayoutAlign="space-between stretch" [fxFlex]="column.width" *matHeaderCellDef>
-					<div fxFlex [disabled]="column.isSortable === false || isResizeActive || inMove" mat-sort-header>
+					<div fxFlex [disabled]="column.isSortable === false || inMove" mat-sort-header>
 						{{ column.title || column.field }}
 					</div>
 				</mat-header-cell>

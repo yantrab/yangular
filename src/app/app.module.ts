@@ -18,7 +18,7 @@ export class CustomMatPaginatorIntl extends MatPaginatorIntl {
       Math.min(startIndex + pageSize, length) :
       startIndex + pageSize;
     return startIndex + 1 + ' - ' + endIndex + ' מתוך ' + length;
-  };
+  }
 }
 
 @NgModule({
