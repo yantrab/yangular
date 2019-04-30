@@ -21,7 +21,7 @@ export class AppComponent implements OnInit {
     setTimeout(() => {
       this.rows = Array(500000).fill(0).map((x, i) => {
     return {
-      name: 'name' + i, id: i, name2: 'long nameeeeeee' + i, id2: i,
+      name: 'name' + i, id: i, name2: 'Long nameeeeeee' + i, id2: i,
       long: 'long long long long long long',
       long2: 'long long long long long long',
     //  long3: 'long long long long long long',

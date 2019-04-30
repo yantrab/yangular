@@ -24,7 +24,7 @@ const modules = [
 ];
 @NgModule({
   declarations: components,
-  exports: [...components],
+  exports: components,
   imports: [
     CommonModule,
     ScrollingModule,
