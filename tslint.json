@@ -4,6 +4,12 @@
     "codelyzer"
   ],
   "rules": {
+    "variable-name": [
+      true,
+      "ban-keywords",
+      "check-format",
+      "allow-leading-underscore"
+    ],
     "array-type": false,
     "arrow-parens": false,
     "deprecation": {
@@ -71,5 +77,5 @@
     "use-pipe-transform-interface": true,
     "component-class-suffix": true,
     "directive-class-suffix": true
-  }
+  },
 }

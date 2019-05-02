@@ -14,18 +14,18 @@ export class AppComponent implements OnInit {
     { field: 'name2', title: 'שם' },
     { field: 'long' },
     { field: 'long2' },
-    // { field: 'long3' },
-    // { field: 'long4' },
+     { field: 'long3' },
+     { field: 'long4' },
   ];
   ngOnInit(): void {
    // setTimeout(() => {
-      this.rows = Array(1).fill(0).map((x, i) => {
+      this.rows = Array(1000).fill(0).map((x, i) => {
         return {
           name: 'name' + i, id: i, name2: 'Long nameeeeeee' + i, id2: i,
           long: 'long long long long long long',
-          long2: 'long long long long long long',
-          //  long3: 'long long long long long long',
-          // long4: 'long long long long long long',
+          long2: 'long long long long long long, long long long long long long',
+            long3: 'long long long long long long long long long long long long long long long long long long',
+           long4: 'long long long long long long',
         };
       });
     //}, 1000);

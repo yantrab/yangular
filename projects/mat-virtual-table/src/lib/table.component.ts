@@ -19,11 +19,12 @@ import { distinctUntilChanged, debounceTime } from 'rxjs/operators';
 
 import { fromEvent, BehaviorSubject } from 'rxjs';
 import { GridTableDataSource } from './data-source';
-import { MatSort } from '@angular/material';
+import { MatSort, throwMatDuplicatedDrawerError } from '@angular/material';
 import { ColumnDef as _columnsDef } from './table.interfaces';
-import { orderBy, keyBy, max, sumBy } from 'lodash';
+import { orderBy, keyBy, max, sumBy, maxBy } from 'lodash';
 import { PCellDef } from './PCellDef';
 import { FixedSizeVirtualScrollStrategy, VIRTUAL_SCROLL_STRATEGY } from '@angular/cdk/scrolling';
+import { getTextWidth } from './utils';
 interface ColumnDef extends _columnsDef {
   template?;
 }
@@ -48,50 +49,44 @@ export class CustomVirtualScrollStrategy extends FixedSizeVirtualScrollStrategy 
   // changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TableComponent implements OnInit, AfterViewInit {
+  sticky = true;
+  dir: 'ltr' | 'rtl' = 'ltr';
+  inMove = false;
+  filterChange = new BehaviorSubject('');
+  @Input() isFilterable = true;
+  @Input() isResizable = true;
+  @Input() filterPlaceholder = 'Filter';
+  @Input() itemSize = 47;
+  @Input() headerSize = 56;
+  @Input() pageSize = 50;
+  @Input() autoSizeColumns = true;
+  isResizeActive = false;
 
-  constructor(private cdr: ChangeDetectorRef){}
+  constructor(private cdr: ChangeDetectorRef) { }
+
   @Input() set columnsDef(columns: ColumnDef[]) {
     this._columnsDef = columns;
     this.columns = this.columnsDef.map(c => c.field);
   }
   get columnsDef() { return this._columnsDef; }
- 
+
   @Input() set rows(rows: any[]) {
     if (!rows) { return; }
     this._rows = rows || [];
     if (!this.columnsDef) {
       this.columnsDef = Object.keys(this._rows[0]).map(key => ({ field: key, title: key } as ColumnDef));
     }
-
-    this.initColumnsWidth();
-
+    setTimeout(() => this.initColumnsWidth(), 1);
     this.initDatasource();
   }
   get rows() { return this._rows || []; }
 
 
-  @HostListener('window:resize', ['$event'])
-  initColumnsWidth(event?) {
-    const widths = {};
-    this.columnsDef.forEach((c, i) => {
-      widths[c.field] =
-        (max(this.rows.slice(0, this.pageSize)
-          .map(r => !r[c.field] ? 20 : r[c.field].toString().length)) * 8.1 + (i === 0 ? 30 : 6));
-    });
-
-    const extra = this.viewport.elementRef.nativeElement.clientWidth - sumBy(Object.values(widths)) - 20;
-    if (extra > 0) {
-      const toAdd = extra / this.columnsDef.length;
-      this.columnsDef.forEach(c => widths[c.field] += toAdd);
-    }
-    this.columnsDef.forEach(c => c.width = c.width && !event ? c.width : (widths[c.field] + 'px'));
-  }
 
   pending: boolean;
-  sticky = true;
-  dir: 'ltr' | 'rtl' = 'ltr';
+
   @ViewChild(CdkVirtualScrollViewport) viewport: CdkVirtualScrollViewport;
-  
+
   _matSort: MatSort;
   @ViewChild(MatSort) set matSort(matSort: MatSort) {
     if (!matSort || this._matSort) { return; }
@@ -106,34 +101,48 @@ export class TableComponent implements OnInit, AfterViewInit {
   }
 
   @ViewChild('filter') filter: ElementRef;
-  
+
   _headerCells: ElementRef[];
   @ViewChildren('headercell') set headerCells(cells) {
     this._headerCells = cells.toArray();
   }
 
   @ContentChildren(PCellDef) _CellDefs: QueryList<PCellDef>;
-  filterChange = new BehaviorSubject('');
   dataSource: GridTableDataSource;
   offset: number;
-  private _columnsDef: ColumnDef[];
-  inMove = false;
   private _rows: any[];
-  @Input() isFilterable = true;
-  @Input() isResizable = true;
-  @Input() filterPlaceholder = 'Filter';
-  @Input() itemSize = 47;
-  @Input() headerSize = 56;
-  @Input() pageSize = 50;
+
+  private _columnsDef: ColumnDef[];
+
   @Input() paginator: boolean;
   columns: string[];
 
-  isResizeActive = false;
-  ngOnInit() {
+  ngOnInit() { }
+  @HostListener('window:resize', ['$event'])
+  initColumnsWidth(event?) {
+    const rows = Array.prototype.slice.call(this.viewport.elementRef.nativeElement.querySelectorAll('mat-row'));
+    const widths = {};
+    this.columnsDef.forEach((c, i) => {
+      const cells = rows.map(r => r.querySelectorAll('mat-cell')[i]);
+      const maxTextCell = maxBy(cells, (c: any) => c.textContent.length);
+      const font = window.getComputedStyle(maxTextCell).font as any;
+      widths[c.field] = getTextWidth(maxTextCell.textContent, font)
+    })
+    // this.columnsDef.forEach((c, i) => {
+    //   widths[c.field] =
+    //     (max(this.rows.slice(0, this.pageSize)
+    //       .map(r => !r[c.field] ? 20 : r[c.field].toString().length)) * 8.1 + (i === 0 ? 30 : 6));
+    // });
 
+    const extra = this.viewport.elementRef.nativeElement.clientWidth - sumBy(Object.values(widths)) - 20;
+    if (extra > 0) {
+      const toAdd = extra / this.columnsDef.length;
+      this.columnsDef.forEach(c => widths[c.field] += toAdd);
+    }
+    this.columnsDef.forEach(c => c.width = c.width && !event ? c.width : (widths[c.field] + 'px'));
   }
 
-  detectChanges(){
+  detectChanges() {
     this.cdr.detectChanges();
   }
 
