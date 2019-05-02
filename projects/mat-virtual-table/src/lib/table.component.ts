@@ -10,7 +10,8 @@ import {
   ViewEncapsulation,
   ViewChildren,
   ChangeDetectionStrategy,
-  HostListener
+  HostListener,
+  ChangeDetectorRef
 } from '@angular/core';
 
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
@@ -18,7 +19,7 @@ import { distinctUntilChanged, debounceTime } from 'rxjs/operators';
 
 import { fromEvent, BehaviorSubject } from 'rxjs';
 import { GridTableDataSource } from './data-source';
-import { MatSort, MatPaginator } from '@angular/material';
+import { MatSort } from '@angular/material';
 import { ColumnDef as _columnsDef } from './table.interfaces';
 import { orderBy, keyBy, max, sumBy } from 'lodash';
 import { PCellDef } from './PCellDef';
@@ -44,14 +45,17 @@ export class CustomVirtualScrollStrategy extends FixedSizeVirtualScrollStrategy 
   styleUrls: ['./table.component.scss'],
   providers: [{ provide: VIRTUAL_SCROLL_STRATEGY, useClass: CustomVirtualScrollStrategy }],
   encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush
+  // changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TableComponent implements OnInit, AfterViewInit {
+
+  constructor(private cdr: ChangeDetectorRef){}
   @Input() set columnsDef(columns: ColumnDef[]) {
     this._columnsDef = columns;
     this.columns = this.columnsDef.map(c => c.field);
   }
   get columnsDef() { return this._columnsDef; }
+ 
   @Input() set rows(rows: any[]) {
     if (!rows) { return; }
     this._rows = rows || [];
@@ -63,6 +67,9 @@ export class TableComponent implements OnInit, AfterViewInit {
 
     this.initDatasource();
   }
+  get rows() { return this._rows || []; }
+
+
   @HostListener('window:resize', ['$event'])
   initColumnsWidth(event?) {
     const widths = {};
@@ -79,11 +86,12 @@ export class TableComponent implements OnInit, AfterViewInit {
     }
     this.columnsDef.forEach(c => c.width = c.width && !event ? c.width : (widths[c.field] + 'px'));
   }
-  get rows() { return this._rows || []; }
+
   pending: boolean;
   sticky = true;
   dir: 'ltr' | 'rtl' = 'ltr';
   @ViewChild(CdkVirtualScrollViewport) viewport: CdkVirtualScrollViewport;
+  
   _matSort: MatSort;
   @ViewChild(MatSort) set matSort(matSort: MatSort) {
     if (!matSort || this._matSort) { return; }
@@ -96,7 +104,9 @@ export class TableComponent implements OnInit, AfterViewInit {
       }, 200);
     });
   }
+
   @ViewChild('filter') filter: ElementRef;
+  
   _headerCells: ElementRef[];
   @ViewChildren('headercell') set headerCells(cells) {
     this._headerCells = cells.toArray();
@@ -121,6 +131,10 @@ export class TableComponent implements OnInit, AfterViewInit {
   isResizeActive = false;
   ngOnInit() {
 
+  }
+
+  detectChanges(){
+    this.cdr.detectChanges();
   }
 
   initDatasource() {
