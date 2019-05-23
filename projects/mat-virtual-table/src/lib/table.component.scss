@@ -47,18 +47,7 @@
     height: 100%;
   }
 }
-
-[dir="rtl"] #table {
-    mat-header-row {
-      &:hover {
-        mat-header-cell {
-          border-left: 0.5px dashed;
-        }
-      }
-  }
-}
-
-[dir="ltr"] #table {
+#table {
   mat-header-row {
     &:hover {
       mat-header-cell {
@@ -67,3 +56,16 @@
     }
   }
 }
+
+[dir="rtl"] #table {
+    mat-header-row {
+      &:hover {
+        mat-header-cell {
+          border-left: 0.5px dashed;
+          border-right: 0px dashed !important;
+        }
+      }
+  }
+}
+
+
