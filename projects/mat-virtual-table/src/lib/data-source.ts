@@ -19,10 +19,11 @@ export class GridTableDataSource extends DataSource<any> {
   constructor(initialData: any[],
               private viewport: CdkVirtualScrollViewport,
               private itemSize: number,
-              private pageSize: number) {
+              private pageSize: number,
+              ) {
     super();
     this.data = initialData;
-    this.viewport.elementScrolled().subscribe((ev: any) => {
+    this.viewport.elementScrolled().subscribe(async(ev: any) => {
       const start = Math.floor(ev.currentTarget.scrollTop / this.itemSize);
       const prevExtraData = start > (this.pageSize / 2) ? (this.pageSize / 2) : start;
       const slicedData = this.data.slice(start - prevExtraData, start + (this.pageSize - prevExtraData));
@@ -32,7 +33,7 @@ export class GridTableDataSource extends DataSource<any> {
       this.visibleData.next(slicedData);
     });
   }
-  private readonly visibleData: BehaviorSubject<any[]> = new BehaviorSubject([]);
+  readonly visibleData: BehaviorSubject<any[]> = new BehaviorSubject([]);
 
   connect(collectionViewer: import ('@angular/cdk/collections').CollectionViewer): Observable<any[] | ReadonlyArray<any>> {
     return this.visibleData;
