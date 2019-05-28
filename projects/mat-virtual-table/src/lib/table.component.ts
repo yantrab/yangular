@@ -174,10 +174,14 @@ export class TableComponent implements OnInit, AfterViewInit {
                     this.pending = true;
                     setTimeout(() => {
                         const str = this.filter.nativeElement.value.toLowerCase();
-                        this.dataSource.allData = this.rowQueries.filter(r => r.q.indexOf(' ' + str) !== -1).map(q => q.row);
+                        this.dataSource.allData = this.rowQueries
+                            .filter(r => r.q.indexOf(' ' + str) !== -1)
+                            .map(q => q.row);
 
                         if (this.dataSource.allData.length < 50) {
-                            this.dataSource.allData = this.rowQueries.filter(r => r.q.indexOf(str) !== -1).map(q => q.row);
+                            this.dataSource.allData = this.rowQueries
+                                .filter(r => r.q.indexOf(str) !== -1)
+                                .map(q => q.row);
                         }
 
                         this.pending = false;
