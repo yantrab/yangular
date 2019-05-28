@@ -10,7 +10,7 @@ export class DynaFormBuilder {
     constructor(public fb: FormBuilder) {}
     private metadataStorage = getFromContainer(MetadataStorage);
 
-    public async buildFormFromClass(classConstructor: new (model) => any): Promise<FormGroup> {
+    public async buildFormFromClass(classConstructor: new (model) => any, initial = {}): Promise<FormGroup> {
         const formControls = {};
         const formFieldList: any = [];
         const props = uniq(
@@ -19,7 +19,7 @@ export class DynaFormBuilder {
                 .map(t => t.propertyName),
         );
         props.forEach(key => {
-            formControls[key] = new FormControl(null, DynaValidator.validateControl(classConstructor));
+            formControls[key] = new FormControl(initial[key], DynaValidator.validateControl(classConstructor));
             formFieldList.push(key);
         });
 
