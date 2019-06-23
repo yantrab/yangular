@@ -1,4 +1,4 @@
-# Virtaul scroll angular material table
+# Virtual scroll angular material table
 Virtual scroll table based on angular material, with sticky columns, filtering ,sorting and resizing columns.
 
 ## Getting Started
