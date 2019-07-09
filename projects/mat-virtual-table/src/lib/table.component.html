@@ -1,44 +1,59 @@
 <div id="table" fxLayout="column">
-	<mat-form-field *ngIf="isFilterable" fxFlex="50px">
-		<input matInput #filter [placeholder]="filterPlaceholder">
-	</mat-form-field>
-	<cdk-virtual-scroll-viewport fxFlex>
-		<mat-table matSort *ngIf="dataSource" [dataSource]="dataSource">
-			<ng-container *ngFor="let column of columnsDef;let i = index" matColumnDef="{{ column.field }}">
-				<mat-header-cell #headercell (mousemove)="mousemove($event,i)" (mousedown)="resizeTable($event, i)"
-					fxLayout="row" fxLayoutAlign="space-between stretch" [fxFlex]="column.width" *matHeaderCellDef>
-					<div fxFlex [disabled]="column.isSortable === false || isResizeActive" mat-sort-header>
-						{{ column.title || column.field }}
-					</div>
-				</mat-header-cell>
-				<mat-cell [fxFlex]="column.width" *matCellDef="let row">
-					<ng-container *ngIf="column.template else defult" [ngTemplateOutlet]="column.template"
-						[ngTemplateOutletContext]="{row:row}">
-					</ng-container>
-					<ng-template #defult>{{ row[column.field]  }}</ng-template>
-				</mat-cell>
-			</ng-container>
+    <mat-form-field *ngIf="isFilterable" fxFlex="50px">
+        <input matInput #filter [placeholder]="filterPlaceholder" />
+    </mat-form-field>
+    <cdk-virtual-scroll-viewport fxFlex>
+        <mat-table matSort *ngIf="dataSource" [dataSource]="dataSource">
+            <ng-container *ngFor="let column of columnsDef; let i = index" matColumnDef="{{ column.field }}">
+                <mat-header-cell
+                    #headercell
+                    (mousemove)="mousemove($event, i)"
+                    (mousedown)="resizeTable($event, i)"
+                    fxLayout="row"
+                    fxLayoutAlign="space-between stretch"
+                    [fxFlex]="column.width"
+                    *matHeaderCellDef
+                >
+                    <div fxFlex [disabled]="column.isSortable === false || isResizeActive" mat-sort-header>
+                        {{ column.title || column.field }}
+                    </div>
+                </mat-header-cell>
+                <mat-cell [fxFlex]="column.width" *matCellDef="let row">
+                    <ng-container
+                        *ngIf="column.template; else defult"
+                        [ngTemplateOutlet]="column.template"
+                        [ngTemplateOutletContext]="{ row: row }"
+                    >
+                    </ng-container>
+                    <ng-template #defult>{{
+                        column.format ? column.format(row[column.field]) : row[column.field]
+                    }}</ng-template>
+                </mat-cell>
+            </ng-container>
 
-			<ng-container matColumnDef="progress">
-				<mat-header-cell *matHeaderCellDef [attr.colspan]="columnsDef.length">
-					<mat-progress-bar mode="indeterminate" [class.show]="pending">
-					</mat-progress-bar>
-				</mat-header-cell>
-			</ng-container>
+            <ng-container matColumnDef="progress">
+                <mat-header-cell *matHeaderCellDef [attr.colspan]="columnsDef.length">
+                    <mat-progress-bar mode="indeterminate" [class.show]="pending"> </mat-progress-bar>
+                </mat-header-cell>
+            </ng-container>
 
-			<mat-header-row *matHeaderRowDef="columns; sticky: sticky" [style.top.px]="-dataSource?.offset">
-			</mat-header-row>
-			<mat-header-row class="progress" *matHeaderRowDef="['progress']; sticky: sticky"
-				[style.top.px]="dataSource?.offset + headerSize">
-			</mat-header-row>
-			<mat-row *matRowDef="let row; columns: columns"></mat-row>
-		</mat-table>
-	</cdk-virtual-scroll-viewport>
-	<mat-paginator *ngIf="dataSource && paginator"
-	         [hidePageSize]="true"
-			 [length]="this.dataSource.allData.length" 
-			 [pageSize]="pageSize"
-			 [pageIndex]="this.dataSource.pageIndex"
-			 (page)="changePage($event)"></mat-paginator>
-
+            <mat-header-row *matHeaderRowDef="columns; sticky: sticky" [style.top.px]="-dataSource?.offset">
+            </mat-header-row>
+            <mat-header-row
+                class="progress"
+                *matHeaderRowDef="['progress']; sticky: sticky"
+                [style.top.px]="dataSource?.offset + headerSize"
+            >
+            </mat-header-row>
+            <mat-row *matRowDef="let row; columns: columns"></mat-row>
+        </mat-table>
+    </cdk-virtual-scroll-viewport>
+    <mat-paginator
+        *ngIf="dataSource && paginator"
+        [hidePageSize]="true"
+        [length]="this.dataSource.allData.length"
+        [pageSize]="pageSize"
+        [pageIndex]="this.dataSource.pageIndex"
+        (page)="changePage($event)"
+    ></mat-paginator>
 </div>

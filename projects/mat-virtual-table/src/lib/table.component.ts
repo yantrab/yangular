@@ -10,13 +10,12 @@ import {
     ViewEncapsulation,
     ViewChildren,
     HostListener,
-    ChangeDetectorRef,
 } from '@angular/core';
 
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import { distinctUntilChanged, debounceTime } from 'rxjs/operators';
 
-import { fromEvent, BehaviorSubject } from 'rxjs';
+import { fromEvent } from 'rxjs';
 import { GridTableDataSource } from './data-source';
 import { MatSort } from '@angular/material';
 import { ColumnDef as _columnsDef } from './table.interfaces';
@@ -59,8 +58,6 @@ export class TableComponent implements OnInit, AfterViewInit {
     @Input() autoSizeColumns = true;
     isResizeActive = false;
 
-    constructor(private cdr: ChangeDetectorRef) {}
-
     @Input() set columnsDef(columns: ColumnDef[]) {
         this._columnsDef = columns;
         this.columns = this.columnsDef.map(c => c.field);
@@ -86,10 +83,10 @@ export class TableComponent implements OnInit, AfterViewInit {
 
     pending: boolean;
 
-    @ViewChild(CdkVirtualScrollViewport) viewport: CdkVirtualScrollViewport;
+    @ViewChild(CdkVirtualScrollViewport, {static:true}) viewport: CdkVirtualScrollViewport;
 
     _matSort: MatSort;
-    @ViewChild(MatSort) set matSort(matSort: MatSort) {
+    @ViewChild(MatSort, {static:true}) set matSort(matSort: MatSort) {
         if (!matSort || this._matSort) {
             return;
         }
@@ -103,7 +100,7 @@ export class TableComponent implements OnInit, AfterViewInit {
         });
     }
 
-    @ViewChild('filter') filter: ElementRef;
+    @ViewChild('filter', {static:true}) filter: ElementRef;
 
     _headerCells: ElementRef[];
     @ViewChildren('headercell') set headerCells(cells) {

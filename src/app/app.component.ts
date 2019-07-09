@@ -8,17 +8,24 @@ import { ColumnDef } from 'projects/mat-virtual-table/src/public-api';
 })
 export class AppComponent implements OnInit {
     title = 'mat-virtual-table';
-    rows;
+    rows = [];
     columns: ColumnDef[] = [
         { field: 'name' },
         { field: 'name2', title: 'שם' },
         { field: 'long' },
         { field: 'long2' },
         { field: 'long3' },
-        { field: 'long4' },
     ];
     ngOnInit(): void {
         // setTimeout(() => {
+        this.columns = [
+            { field: 'name' },
+            { field: 'name2', title: 'שם' },
+            { field: 'long' },
+            { field: 'long2', format: value => value + '----------' },
+            { field: 'long3' },
+            { field: 'long4' },
+        ];
         this.rows = Array(1000)
             .fill(0)
             .map((x, i) => {

@@ -4,4 +4,5 @@ export interface ColumnDef {
     isSortable?: boolean;
     isFilterable?: boolean;
     width?: string;
+    format?: (any) => string;
 }
