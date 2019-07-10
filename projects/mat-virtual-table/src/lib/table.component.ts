@@ -82,7 +82,7 @@ export class TableComponent implements OnInit, AfterViewInit {
     }
 
     pending: boolean;
-
+    @ViewChild('table', {static:false}) tableComponent;
     @ViewChild(CdkVirtualScrollViewport, {static:true}) viewport: CdkVirtualScrollViewport;
 
     _matSort: MatSort;
@@ -100,7 +100,7 @@ export class TableComponent implements OnInit, AfterViewInit {
         });
     }
 
-    @ViewChild('filter', {static:true}) filter: ElementRef;
+    @ViewChild('filter', {static:false}) filter: ElementRef;
 
     _headerCells: ElementRef[];
     @ViewChildren('headercell') set headerCells(cells) {
@@ -192,7 +192,7 @@ export class TableComponent implements OnInit, AfterViewInit {
             });
         }, 0);
 
-        this.dir = window.getComputedStyle(this.filter.nativeElement).direction as any;
+        this.dir = window.getComputedStyle(this.tableComponent.nativeElement).direction as any;
     }
     private getTargetX(e) {
         const rect = e.currentTarget.getBoundingClientRect();
