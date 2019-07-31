@@ -82,11 +82,11 @@ export class TableComponent implements OnInit, AfterViewInit {
     }
 
     pending: boolean;
-    @ViewChild('table', {static:false}) tableComponent;
-    @ViewChild(CdkVirtualScrollViewport, {static:true}) viewport: CdkVirtualScrollViewport;
+    @ViewChild('table', { static: false }) tableComponent;
+    @ViewChild(CdkVirtualScrollViewport, { static: true }) viewport: CdkVirtualScrollViewport;
 
     _matSort: MatSort;
-    @ViewChild(MatSort, {static:true}) set matSort(matSort: MatSort) {
+    @ViewChild(MatSort, { static: false }) set matSort(matSort: MatSort) {
         if (!matSort || this._matSort) {
             return;
         }
@@ -100,7 +100,7 @@ export class TableComponent implements OnInit, AfterViewInit {
         });
     }
 
-    @ViewChild('filter', {static:false}) filter: ElementRef;
+    @ViewChild('filter', { static: false }) filter: ElementRef;
 
     _headerCells: ElementRef[];
     @ViewChildren('headercell') set headerCells(cells) {
@@ -119,6 +119,10 @@ export class TableComponent implements OnInit, AfterViewInit {
     ngOnInit() {}
     @HostListener('window:resize', ['$event'])
     initColumnsWidth(event?) {
+        if (!this.rows.length) {
+            return;
+        }
+
         const rows = Array.prototype.slice.call(this.viewport.elementRef.nativeElement.querySelectorAll('mat-row'));
         const widths = {};
         this.columnsDef.forEach((c, i) => {
