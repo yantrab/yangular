@@ -10,6 +10,8 @@ import {
     ViewEncapsulation,
     ViewChildren,
     HostListener,
+    Optional,
+    Inject,
 } from '@angular/core';
 
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
@@ -17,7 +19,7 @@ import { distinctUntilChanged, debounceTime } from 'rxjs/operators';
 
 import { fromEvent } from 'rxjs';
 import { GridTableDataSource } from './data-source';
-import { MatSort } from '@angular/material';
+import { MatSort, MAT_DIALOG_DATA } from '@angular/material';
 import { ColumnDef as _columnsDef } from './table.interfaces';
 import { orderBy, keyBy, sumBy, maxBy } from 'lodash';
 import { PCellDef } from './PCellDef';
@@ -45,6 +47,22 @@ export class CustomVirtualScrollStrategy extends FixedSizeVirtualScrollStrategy 
     encapsulation: ViewEncapsulation.None,
 })
 export class TableComponent implements OnInit, AfterViewInit {
+    constructor(@Optional() @Inject(MAT_DIALOG_DATA) public data?) {
+        if (data) {
+            this.isFilterable = data.isFilterable;
+            this.isResizable = data.isResizable;
+            this.filterPlaceholder = data.filterPlaceholder;
+            this.filterPlaceholder = data.filterPlaceholder;
+            this.itemSize = data.itemSize;
+            this.headerSize = data.headerSize;
+            this.pageSize = data.pageSize;
+            this.autoSizeColumns = data.autoSizeColumns;
+            this.paginator = data.paginator;
+            this.columnsDef = data.columnsDef;
+            this.rows = data.rows;
+        }
+    }
+
     sticky = true;
     dir: 'ltr' | 'rtl' = 'ltr';
     inMove = false;
@@ -56,8 +74,7 @@ export class TableComponent implements OnInit, AfterViewInit {
     @Input() pageSize = 50;
     @Input() idFieldName = '_id';
     @Input() autoSizeColumns = true;
-    isResizeActive = false;
-
+    @Input() paginator: boolean;
     @Input() set columnsDef(columns: ColumnDef[]) {
         this._columnsDef = columns;
         this.columns = this.columnsDef.map(c => c.field);
@@ -80,7 +97,7 @@ export class TableComponent implements OnInit, AfterViewInit {
     get rows() {
         return this._rows || [];
     }
-
+    isResizeActive = false;
     pending: boolean;
     @ViewChild('table', { static: false }) tableComponent;
     @ViewChild(CdkVirtualScrollViewport, { static: true }) viewport: CdkVirtualScrollViewport;
@@ -113,7 +130,6 @@ export class TableComponent implements OnInit, AfterViewInit {
     private _rows: any[];
     private _columnsDef: ColumnDef[];
     private rowQueries = [];
-    @Input() paginator: boolean;
     columns: string[];
 
     ngOnInit() {}
