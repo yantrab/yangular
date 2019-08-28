@@ -4,6 +4,8 @@ import { TableModule } from '../../projects/mat-virtual-table/src/lib/table.modu
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatPaginatorIntl } from '@angular/material';
+import { MatDialogModule } from '@angular/material';
+import { TableComponent } from '../../projects/mat-virtual-table/src/lib/table.component';
 export class CustomMatPaginatorIntl extends MatPaginatorIntl {
   nextPageLabel = 'הבא';
   previousPageLabel = 'קודם';
@@ -28,9 +30,12 @@ export class CustomMatPaginatorIntl extends MatPaginatorIntl {
   imports: [
     BrowserModule,
     TableModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    MatDialogModule
   ],
   providers: [{ provide: MatPaginatorIntl, useClass: CustomMatPaginatorIntl}],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents:[TableComponent]
+
 })
 export class AppModule { }

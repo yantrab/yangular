@@ -49,17 +49,20 @@ export class CustomVirtualScrollStrategy extends FixedSizeVirtualScrollStrategy 
 export class TableComponent implements OnInit, AfterViewInit {
     constructor(@Optional() @Inject(MAT_DIALOG_DATA) public data?) {
         if (data) {
-            this.isFilterable = data.isFilterable;
-            this.isResizable = data.isResizable;
-            this.filterPlaceholder = data.filterPlaceholder;
-            this.filterPlaceholder = data.filterPlaceholder;
-            this.itemSize = data.itemSize;
-            this.headerSize = data.headerSize;
-            this.pageSize = data.pageSize;
-            this.autoSizeColumns = data.autoSizeColumns;
+          setTimeout(() => {
+            this.isFilterable = !!data.isFilterable;
+            this.isResizable = !!data.isResizable;
+            this.filterPlaceholder = data.filterPlaceholder || 'Filter';
+            this.itemSize = data.itemSize || 47;
+            this.headerSize = data.headerSize || 56;
+            this.pageSize = data.pageSize || 50;
+            this.idFieldName = data.idFieldName || '_id';
+            this.autoSizeColumns = !!data.autoSizeColumns;
             this.paginator = data.paginator;
             this.columnsDef = data.columnsDef;
             this.rows = data.rows;
+          },100);
+
         }
     }
 

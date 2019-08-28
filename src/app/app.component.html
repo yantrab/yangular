@@ -1,6 +1,15 @@
 <!-- some tags with dir attribute -->
-<mat-virtual-table [isFilterable]="false"  style="height:500px;" [rows]="rows" [columnsDef]="columns" dir="rtl" [paginator]="true">
-    <ng-template pCellDef column="name" let-row="row" >
-        <b> {{row.name}} </b>
+<mat-virtual-table
+    [isFilterable]="false"
+    style="height:500px;"
+    [rows]="rows"
+    [columnsDef]="columns"
+    dir="rtl"
+    [paginator]="true"
+>
+    <ng-template pCellDef column="name" let-row="row">
+        <b> {{ row.name }} </b>
     </ng-template>
 </mat-virtual-table>
+
+<button mat-button (click)="openDialog()">open with dialog</button>

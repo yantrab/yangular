@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ColumnDef } from 'projects/mat-virtual-table/src/public-api';
+import { ColumnDef, TableComponent } from 'projects/mat-virtual-table/src/public-api';
+import { MatDialog } from '@angular/material';
 
 @Component({
     selector: 'app-root',
@@ -7,7 +8,7 @@ import { ColumnDef } from 'projects/mat-virtual-table/src/public-api';
     styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
-    title = 'mat-virtual-table';
+   constructor(private dialog: MatDialog){}
     rows = [];
     columns: ColumnDef[] = [
         { field: 'name' },
@@ -42,4 +43,15 @@ export class AppComponent implements OnInit {
             });
         // }, 1000);
     }
+
+  openDialog() {
+    this.dialog.open(TableComponent, {
+      width: '900px',
+      height:'500px',
+      data: {
+        rows: this.rows,
+        columnsDef: this.columns
+      },
+    });
+  }
 }
