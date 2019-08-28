@@ -1,14 +1,14 @@
 {
-  "name": "ng-dyna-form",
-  "license": "ISC",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/yantrab/yangular/tree/master/projects/dyna-form"
-  },
-  "version": "0.0.4",
-  "peerDependencies": {
-    "@angular/common": "^7.2.0",
-    "@angular/core": "^7.2.0",
-    "class-validator":"^0.9.1"
-  }
+    "name": "ng-dyna-form",
+    "license": "ISC",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/yantrab/yangular/tree/master/projects/dyna-form"
+    },
+    "version": "0.0.5",
+    "peerDependencies": {
+        "@angular/common": "^7.2.0",
+        "@angular/core": "^7.2.0",
+        "class-validator": "^0.9.1"
+    }
 }
