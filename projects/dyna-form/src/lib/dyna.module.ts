@@ -4,17 +4,17 @@ import { DynaFormBuilder } from './dyna-form/dyna-form.builder';
 import { CommonModule } from '@angular/common';
 import {
 
-    MatInputModule,
-    MatFormFieldModule,
+  MatInputModule,
+  MatFormFieldModule, MatIconModule,
 } from '@angular/material';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 @NgModule({
     declarations: [TextBoxComponent],
-    imports: [FormsModule, ReactiveFormsModule,
-        MatInputModule,
-        MatFormFieldModule,
-        CommonModule
-    ],
+  imports: [FormsModule, ReactiveFormsModule,
+    MatInputModule,
+    MatFormFieldModule,
+    CommonModule, MatIconModule,
+  ],
     providers: [DynaFormBuilder],
     exports: [TextBoxComponent]
 })
