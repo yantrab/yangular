@@ -21,7 +21,7 @@ import { fromEvent } from 'rxjs';
 import { GridTableDataSource } from './data-source';
 import { MatSort, MAT_DIALOG_DATA } from '@angular/material';
 import { ColumnDef as _columnsDef } from './table.interfaces';
-import { orderBy, keyBy, sumBy, maxBy } from 'lodash';
+import { orderBy, keyBy, sumBy, maxBy, cloneDeep } from 'lodash';
 import { PCellDef } from './PCellDef';
 import { FixedSizeVirtualScrollStrategy, VIRTUAL_SCROLL_STRATEGY } from '@angular/cdk/scrolling';
 import { getTextWidth } from './utils';
@@ -58,8 +58,8 @@ export class TableComponent implements OnInit, AfterViewInit {
             this.idFieldName = data.idFieldName || '_id';
             this.autoSizeColumns = !!data.autoSizeColumns;
             this.paginator = data.paginator;
+            this.columnsDef = data.columnsDef;
             setTimeout(() => {
-                this.columnsDef = data.columnsDef;
                 this.rows = data.rows;
             }, 100);
         }
@@ -78,7 +78,7 @@ export class TableComponent implements OnInit, AfterViewInit {
     @Input() autoSizeColumns = true;
     @Input() paginator: boolean;
     @Input() set columnsDef(columns: ColumnDef[]) {
-        this._columnsDef = columns;
+        this._columnsDef = cloneDeep(columns);
         this.columns = this.columnsDef.map(c => c.field);
     }
     get columnsDef() {
