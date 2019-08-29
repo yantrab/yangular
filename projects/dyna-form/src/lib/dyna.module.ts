@@ -3,9 +3,8 @@ import { TextBoxComponent } from './text-box/text-box.component';
 import { DynaFormBuilder } from './dyna-form/dyna-form.builder';
 import { CommonModule } from '@angular/common';
 import {
-
   MatInputModule,
-  MatFormFieldModule, MatIconModule,
+  MatFormFieldModule, MatIconModule,MatButtonModule
 } from '@angular/material';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 @NgModule({
@@ -13,7 +12,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
   imports: [FormsModule, ReactiveFormsModule,
     MatInputModule,
     MatFormFieldModule,
-    CommonModule, MatIconModule,
+    CommonModule, MatIconModule,MatButtonModule
   ],
     providers: [DynaFormBuilder],
     exports: [TextBoxComponent]
