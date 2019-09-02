@@ -12,6 +12,7 @@ import {
     HostListener,
     Optional,
     Inject,
+  ChangeDetectionStrategy
 } from '@angular/core';
 
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
@@ -45,6 +46,7 @@ export class CustomVirtualScrollStrategy extends FixedSizeVirtualScrollStrategy 
     styleUrls: ['./table.component.scss'],
     providers: [{ provide: VIRTUAL_SCROLL_STRATEGY, useClass: CustomVirtualScrollStrategy }],
     encapsulation: ViewEncapsulation.None,
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TableComponent implements OnInit, AfterViewInit {
     constructor(@Optional() @Inject(MAT_DIALOG_DATA) public data?) {
