@@ -1,71 +1,74 @@
 #table {
-  height: 100%;
-  @mixin base {
-    .mat-table {
-      width: 100%;
-    }
-  }
-
-  @mixin progress {
-    .mat-header-row.progress {
-      border: none;
-      min-height: 0;
-
-      .mat-header-cell {
-        border: 0;
-        padding: 0;
-      }
-
-      mat-progress-bar {
-        bottom: 0;
-        position: absolute;
-        transition: height 0.3s, opacity 0.25s linear;
-
-        &:not(.show) {
-          height: 0;
-          opacity: 0;
+    height: 100%;
+    @mixin base {
+        .mat-table {
+            width: 100%;
         }
-      }
     }
-  }
 
-  :host {
-    display: block;
-  }
+    @mixin progress {
+        .mat-header-row.progress {
+            border: none;
+            min-height: 0;
 
-  @include base;
-  @include progress;
+            .mat-header-cell {
+                border: 0;
+                padding: 0;
+            }
 
-  .title {
-    height: 60px;
-  }
-  cdk-virtual-scroll-viewport {
-    height: 100%;
-  }
+            mat-progress-bar {
+                bottom: 0;
+                position: absolute;
+                transition: height 0.3s, opacity 0.25s linear;
 
-  .mat-sort-header-container {
-    height: 100%;
-  }
+                &:not(.show) {
+                    height: 0;
+                    opacity: 0;
+                }
+            }
+        }
+    }
+
+    :host {
+        display: block;
+    }
+
+    @include base;
+    @include progress;
+
+    .title {
+        height: 60px;
+    }
+    cdk-virtual-scroll-viewport {
+        height: 100%;
+    }
+
+    .mat-sort-header-container {
+        height: 100%;
+    }
 }
 #table {
-  mat-header-row {
-    &:hover {
-      mat-header-cell {
-        border-right: 0.5px dashed;
-      }
-    }
-  }
-}
 
-[dir="rtl"] #table {
+  .resizable {
     mat-header-row {
       &:hover {
         mat-header-cell {
-          border-left: 0.5px dashed;
-          border-right: 0px dashed !important;
+          border-right: 3.5px #d1baba75 double;
         }
       }
+    }
   }
 }
 
-
+[dir='rtl'] #table {
+  .resizable{
+  mat-header-row {
+    &:hover {
+      mat-header-cell {
+        border-left: 3.5px #d1baba75 double;
+        border-right: 0px dashed !important;
+      }
+    }
+  }
+  }
+}

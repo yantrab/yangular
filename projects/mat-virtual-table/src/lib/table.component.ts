@@ -12,7 +12,7 @@ import {
     HostListener,
     Optional,
     Inject,
-  ChangeDetectionStrategy
+    ChangeDetectionStrategy,
 } from '@angular/core';
 
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
@@ -46,7 +46,7 @@ export class CustomVirtualScrollStrategy extends FixedSizeVirtualScrollStrategy 
     styleUrls: ['./table.component.scss'],
     providers: [{ provide: VIRTUAL_SCROLL_STRATEGY, useClass: CustomVirtualScrollStrategy }],
     encapsulation: ViewEncapsulation.None,
-    changeDetection: ChangeDetectionStrategy.OnPush,
+    // changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TableComponent implements OnInit, AfterViewInit {
     constructor(@Optional() @Inject(MAT_DIALOG_DATA) public data?) {
@@ -243,26 +243,36 @@ export class TableComponent implements OnInit, AfterViewInit {
             document.removeEventListener('mousemove', moveFn);
             document.removeEventListener('mouseup', upFn);
             this.inMove = false;
+            // How to prevent sorting here ?
         };
         document.addEventListener('mousemove', moveFn);
         document.addEventListener('mouseup', upFn);
     }
 
     mousemove(ev, i) {
-        if (!this.isResizable || this.inMove) {
-            return;
+        if (!this.isResizable) return;
+        if (this.inMove){
+          ev.target.style.cursor = 'col-resize';
+          return;
+        }
+        if(ev.target.tagName.toLowerCase() !== 'mat-header-cell'){
+          ev.target.style.cursor = 'pointer';
+        } else{
+          ev.target.style.cursor = 'default';
         }
         this.isResizeActive = false;
-        ev.target.style.cursor = 'pointer';
         const el = ev.currentTarget;
         const elWidth = el.clientWidth;
         let x = this.getTargetX(ev);
         if (this.dir === 'rtl') {
             x = elWidth - x;
         }
-        if (elWidth - x < 10) {
+        if (elWidth - x < 5) {
             ev.target.style.cursor = 'col-resize';
             this.isResizeActive = true;
         }
+        // else if (elWidth - x < 20 || x - elWidth > -20) {
+        //     ev.target.style.cursor = 'default';
+        // }
     }
 }

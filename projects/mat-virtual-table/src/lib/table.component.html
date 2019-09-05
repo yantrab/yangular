@@ -3,7 +3,7 @@
         <input matInput #filter [placeholder]="filterPlaceholder" />
     </mat-form-field>
     <cdk-virtual-scroll-viewport fxFlex>
-        <mat-table matSort *ngIf="dataSource" [dataSource]="dataSource">
+        <mat-table matSort *ngIf="dataSource" [dataSource]="dataSource" [class.resizable] = "isResizable">
             <ng-container *ngFor="let column of columnsDef; let i = index" matColumnDef="{{ column.field }}">
                 <mat-header-cell
                     #headercell
@@ -14,7 +14,7 @@
                     [fxFlex]="column.width"
                     *matHeaderCellDef
                 >
-                    <div fxFlex [disabled]="column.isSortable === false || isResizeActive" mat-sort-header>
+                    <div [disabled]="column.isSortable === false" mat-sort-header>
                         {{ column.title || column.field }}
                     </div>
                 </mat-header-cell>
