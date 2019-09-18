@@ -1,5 +1,13 @@
+
+:host {
+  width: 100%;
+  height: 100%;
+}
+
 #table {
-    height: 100%;
+
+
+  height: 100%;
     @mixin base {
         .mat-table {
             width: 100%;
@@ -29,10 +37,6 @@
         }
     }
 
-    :host {
-        display: block;
-    }
-
     @include base;
     @include progress;
 
@@ -47,8 +51,8 @@
         height: 100%;
     }
 }
-#table {
 
+#table {
   .resizable {
     mat-header-row {
       &:hover {

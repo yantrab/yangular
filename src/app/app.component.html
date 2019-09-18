@@ -1,18 +1,19 @@
 <!-- some tags with dir attribute -->
-<mat-virtual-table
-    [isFilterable]="false"
-    style="height:500px;"
+<div     style="height:500px;">
+  <mat-virtual-table
+      [isFilterable]="false"
 
-    [rows]="rows"
-    [columnsDef]="columns"
-    dir="rtl"
-    [paginator]="true"
->
-    <ng-template pCellDef column="name" let-row="row">
-        <b> {{ row.name }} </b>
-    </ng-template>
+      [rows]="rows"
+      [columnsDef]="columns"
+      dir="rtl"
+      [paginator]="true"
+  >
+      <ng-template pCellDef column="name" let-row="row">
+          <b> {{ row.name }} </b>
+      </ng-template>
 </mat-virtual-table>
-
+</div>
 <button mat-button (click)="openDialog()">open with dialog</button>
+<button mat-button (click)="openForm()">open form</button>
 <!-- <p-text-box type="password"></p-text-box>
 <p-text-box type="text"></p-text-box> -->

@@ -1,19 +1,16 @@
 import { Component, Input } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { MyErrorStateMatcher } from './MyErrorStateMatcher';
 
 @Component({
     selector: 'p-text-box',
     template: `
-        <form  [formGroup]="form.parent">
             <mat-form-field [appearance]="appearance">
                 <input
+                  matInput
+                    [formControl]=formControl
                     [type]="type === 'password' ? (hide ? 'password' : 'text') : type"
-                    matInput
                     [placeholder]="placeholder"
-                    [formControl]="form"
-                    [name]="name"
-                    [formControlName]="name"
                     [errorStateMatcher]="matcher"
                 />
                 <button
@@ -27,15 +24,13 @@ import { MyErrorStateMatcher } from './MyErrorStateMatcher';
                     <mat-icon>{{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>
                 </button>
                 <mat-hint *ngIf="hint">{{ hint }}</mat-hint>
-                <mat-error *ngIf="form.invalid"> {{ matcher.error }} </mat-error>
+                <mat-error *ngIf="formControl.invalid"> {{ matcher.error }} </mat-error>
             </mat-form-field>
-        </form>
     `,
     styles: ['mat-form-field{width: 100%;}'],
 })
 export class TextBoxComponent {
-  @Input() form: FormControl = new FormControl();
-  @Input() name: string;
+  @Input() formControl: FormControl;
   @Input() placeholder = '';
   @Input() hint;
   @Input() type = 'text';

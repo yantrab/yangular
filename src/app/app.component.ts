@@ -1,6 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { ColumnDef, TableComponent } from 'projects/mat-virtual-table/src/public-api';
 import { MatDialog } from '@angular/material';
+import { FormComponent } from '../../projects/dyna-form/src/lib/form/form.component';
+import { IsEmail, IsOptional, IsString, Length } from 'class-validator';
+export class User {
+  @IsOptional() @IsString() @Length(5, 10) password: string;
+  @IsString() company: string;
+  @IsString() phone: string;
+  @IsString() @IsEmail() email: string;
+  @IsOptional() @IsString() details?: string;
+  @IsOptional() @IsString() fName?: string;
+  @IsOptional() @IsString() lName?: string;
+}
 
 @Component({
     selector: 'app-root',
@@ -52,6 +63,27 @@ export class AppComponent implements OnInit {
         rows: this.rows,
         columnsDef: this.columns
       },
+    });
+  }
+
+  openForm() {
+    const formModel = {
+      feilds: [
+        { placeHolder: 'אמייל', key: 'email' },
+        { placeHolder: 'חברה', key: 'company' },
+        { placeHolder: 'שם פרטי', key: 'fName' },
+        { placeHolder: 'שם משפחה', key: 'lName' },
+        { placeHolder: 'טלפון', key: 'phone' },
+      ],
+      modelConstructor: User,
+      model: new User,
+    };
+
+      this.dialog.open(FormComponent, {
+      width: '80%',
+      maxWidth: '540px',
+      data: formModel,
+      direction: 'rtl',
     });
   }
 }
