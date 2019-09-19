@@ -24,7 +24,7 @@ import { MyErrorStateMatcher } from './MyErrorStateMatcher';
                     <mat-icon>{{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>
                 </button>
                 <mat-hint *ngIf="hint">{{ hint }}</mat-hint>
-                <mat-error *ngIf="formControl.invalid"> {{ matcher.error }} </mat-error>
+                <mat-error *ngIf="formControl.invalid"> {{ errorTranslations[matcher.error] || matcher.error}} </mat-error>
             </mat-form-field>
     `,
     styles: ['mat-form-field{width: 100%;}'],
@@ -35,6 +35,8 @@ export class TextBoxComponent {
   @Input() hint;
   @Input() type = 'text';
   @Input() appearance = 'outline';
+@Input() errorTranslations = {};
+
   hide = true;
 
   matcher = new MyErrorStateMatcher();

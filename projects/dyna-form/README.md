@@ -1,24 +1,67 @@
-# DynaForm
+# Angular Dynamic Form
+with [class-validator](https://github.com/typestack/class-validator) we can using decorators validation like this:
 
-This library was generated with [Angular CLI](https://github.com/angular/angular-cli) version 7.2.0.
+```typescript
+export class User {
+  @IsString() @IsEmail() email: string;
+  @IsOptional() @IsString() details?: string;
+  @IsString() fName?: string;
+  @IsString() lName?: string;
+} 
+```
 
-## Code scaffolding
+This module help you to prevent rewrite the validation in angular forms.
 
-Run `ng generate component component-name --project dyna-form` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module --project dyna-form`.
-> Note: Don't forget to add `--project dyna-form` or else it will be added to the default project in your `angular.json` file. 
+## Get Started
+### instalation 
 
-## Build
+```
+npm i ng-dyna-form
+```
 
-Run `ng build dyna-form` to build the project. The build artifacts will be stored in the `dist/` directory.
+### import to NgModule
+```typescript
+@NgModule({
+    imports: [
+        //...
+        DynaFormModule,
+        //...
+    ],
+})
+```
+### build form
+```typescript
+  constructor(private dynaFB: DynaFormBuilder) {
+      this.dynaFB.buildFormFromClass(User, new User()).then(form => (this.form = form));
+    }
+  }
+```
 
-## Publishing
+now you can create you own template, or use my form remplate:
+```typescript
+const formModel: FormModel<User> = {
+    feilds: [
+      { placeHolder: 'אמייל', key: 'email' },
+      { placeHolder: 'שם פרטי', key: 'fName' },
+      { placeHolder: 'שם משפחה', key: 'lName' },
+    ],
+    modelConstructor: User,
+    model: new User(),
+    errorTranslations: {
+      'must be an email': 'נא הכנס מייל תקין',
+      'must be a string': 'שדה חובה'
+    }
+  };
 
-After building your library with `ng build dyna-form`, go to the dist folder `cd dist/dyna-form` and run `npm publish`.
+    this.dialog.open(FormComponent, {
+      width: '80%',
+      maxWidth: '540px',
+      data: this.formModel,
+      direction: 'rtl',
+    });
+    // or
+    // <p-form [formModel]="formModel"></p-form>
 
-## Running unit tests
+``` 
 
-Run `ng test dyna-form` to execute the unit tests via [Karma](https://karma-runner.github.io).
 
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).

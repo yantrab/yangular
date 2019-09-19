@@ -1,12 +1,9 @@
 import {FormControl, FormGroup, ValidatorFn} from '@angular/forms';
 import {validateSync, ValidationError} from 'class-validator';
-import {PropertyUtils} from './property.utils';
-
 /**
  * Custom angular validator for pleerock class-validator decorators.
  */
 // @dynamic
-
 export class DynaValidator {
   /**
    * Validate the value of the specified AbstractControl
@@ -20,7 +17,6 @@ export class DynaValidator {
       if (controlName) {
         const obj: Object = new classConstructor();
         obj[controlName] = control.value;
-        // TODO skipMissingProperties
         const valResult: ValidationError[] = validateSync(obj, { skipMissingProperties: false });
 
         if (valResult.length > 0) {
@@ -42,7 +38,7 @@ export class DynaValidator {
       if (valid.property === propertyName && valid.constraints) {
         for (const constr in valid.constraints) {  // iterate object properties
           if (valid.constraints.hasOwnProperty(constr)) {
-            msgs.push(valid.constraints[constr]);
+            msgs.push(valid.constraints[constr].replace(propertyName + ' ', ''));
           }
         }
       }

@@ -1,16 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { ColumnDef, TableComponent } from 'projects/mat-virtual-table/src/public-api';
 import { MatDialog } from '@angular/material';
-import { FormComponent } from '../../projects/dyna-form/src/lib/form/form.component';
+import { FormComponent, FormModel } from '../../projects/dyna-form/src/lib/form/form.component';
 import { IsEmail, IsOptional, IsString, Length } from 'class-validator';
 export class User {
-  @IsOptional() @IsString() @Length(5, 10) password: string;
-  @IsString() company: string;
-  @IsString() phone: string;
   @IsString() @IsEmail() email: string;
   @IsOptional() @IsString() details?: string;
-  @IsOptional() @IsString() fName?: string;
-  @IsOptional() @IsString() lName?: string;
+  @IsString() fName?: string;
+  @IsString() lName?: string;
 }
 
 @Component({
@@ -20,6 +17,19 @@ export class User {
 })
 export class AppComponent implements OnInit {
    constructor(private dialog: MatDialog){}
+  formModel: FormModel<User> = {
+    feilds: [
+      { placeHolder: 'אמייל', key: 'email' },
+      { placeHolder: 'שם פרטי', key: 'fName' },
+      { placeHolder: 'שם משפחה', key: 'lName' },
+    ],
+    modelConstructor: User,
+    model: new User(),
+    errorTranslations: {
+      'must be an email': 'נא הכנס מייל תקין',
+      'must be a string': 'שדה חובה'
+    }
+  };
     rows = [];
     columns: ColumnDef[] = [
         { field: 'name' },
@@ -58,7 +68,7 @@ export class AppComponent implements OnInit {
   openDialog() {
     this.dialog.open(TableComponent, {
       width: '900px',
-      height:'500px',
+      height: '500px',
       data: {
         rows: this.rows,
         columnsDef: this.columns
@@ -67,22 +77,11 @@ export class AppComponent implements OnInit {
   }
 
   openForm() {
-    const formModel = {
-      feilds: [
-        { placeHolder: 'אמייל', key: 'email' },
-        { placeHolder: 'חברה', key: 'company' },
-        { placeHolder: 'שם פרטי', key: 'fName' },
-        { placeHolder: 'שם משפחה', key: 'lName' },
-        { placeHolder: 'טלפון', key: 'phone' },
-      ],
-      modelConstructor: User,
-      model: new User,
-    };
 
-      this.dialog.open(FormComponent, {
+    this.dialog.open(FormComponent, {
       width: '80%',
       maxWidth: '540px',
-      data: formModel,
+      data: this.formModel,
       direction: 'rtl',
     });
   }

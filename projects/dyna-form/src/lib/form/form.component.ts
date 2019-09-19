@@ -8,6 +8,7 @@ export interface FormModel<T> {
   model: Partial<T>;
   feilds: Array<{ key: keyof T; placeHolder: string; appearance?: 'legacy ' | 'standard' | 'fill' | 'outline ' }>;
   appearance?: 'legacy ' | 'standard' | 'fill' | 'outline ';
+  errorTranslations?: {};
 }
 
 @Component({
@@ -21,14 +22,19 @@ export class FormComponent implements OnInit {
   constructor(
     @Optional() public dialogRef: MatDialogRef<FormComponent>,
     private dynaFB: DynaFormBuilder,
-    @Inject(MAT_DIALOG_DATA) private data: FormModel<any>,
+    @Optional() @Inject(MAT_DIALOG_DATA) private data: FormModel<any>,
   ) {
     if (data) {
       this.formModel = data;
+      this.dynaFB.buildFormFromClass(this.formModel.modelConstructor, this.formModel.model).then(form => (this.form = form));
     }
   }
   ngOnInit(): void {
-    this.dynaFB.buildFormFromClass(this.formModel.modelConstructor, this.formModel.model).then(form => (this.form = form));
+    if (!this.formModel.errorTranslations)
+      this.formModel.errorTranslations = {};
+
+    if(!this.form)
+      this.dynaFB.buildFormFromClass(this.formModel.modelConstructor, this.formModel.model).then(form => (this.form = form));
   }
 
   save(e) {

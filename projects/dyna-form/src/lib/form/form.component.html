@@ -2,15 +2,17 @@
   <form fxFlex autocomplete="off" mat-dialog-content  [formGroup]="form" >
     <div fxLayout="row wrap" fxLayoutAlign="space-between center" >
       <p-text-box
-        ngDefaultControl
         *ngFor="let field of formModel.feilds"
+        [class]="'form_' + field.key"
+        ngDefaultControl
         [formControl]="form.controls[field.key]"
         [placeholder]="field.placeHolder"
         [appearance]="field.appearance || formModel.appearance || 'standard'"
+        [errorTranslations] = formModel.errorTranslations
       ></p-text-box>
     </div>
   </form>
-  <div fxFlex="50px;" mat-dialog-actions fxLayoutAlign="space-between end">
+  <div fxFlex="50px;" mat-dialog-actions fxLayoutAlign="space-between end" *ngIf="dialogRef">
     <button (click)="save($event)" mat-raised-button>שמור</button>
     <button (click)="cancel()" mat-raised-button>בטל</button>
   </div>
