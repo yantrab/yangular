@@ -38,7 +38,7 @@ npm i ng-dyna-form
   }
 ```
 
-You can create youר template, or use my form template:
+You can create your custom template, or using my form template:
 ```typescript
 const formModel: FormModel<User> = {
     feilds: [
