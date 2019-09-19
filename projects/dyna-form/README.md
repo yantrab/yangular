@@ -5,8 +5,8 @@ with [class-validator](https://github.com/typestack/class-validator) we can usin
 export class User {
   @IsString() @IsEmail() email: string;
   @IsOptional() @IsString() details?: string;
-  @IsString() fName?: string;
-  @IsString() lName?: string;
+  @IsString() fName: string;
+  @IsString() lName: string;
 } 
 ```
 
@@ -45,6 +45,7 @@ const formModel: FormModel<User> = {
       { placeHolder: 'אמייל', key: 'email' },
       { placeHolder: 'שם פרטי', key: 'fName' },
       { placeHolder: 'שם משפחה', key: 'lName' },
+      { placeHolder: 'פרטים נוספים', key: 'details' },
     ],
     modelConstructor: User,
     model: new User(),
