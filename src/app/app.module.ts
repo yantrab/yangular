@@ -4,7 +4,7 @@ import { TableModule } from '../../projects/mat-virtual-table/src/lib/table.modu
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatIconModule, MatPaginatorIntl } from '@angular/material';
-import { MatDialogModule,MatButtonModule } from '@angular/material';
+import { MatDialogModule, MatButtonModule } from '@angular/material';
 import { TableComponent } from '../../projects/mat-virtual-table/src/lib/table.component';
 import { DynaFormModule } from '../../projects/dyna-form/src/lib/dyna.module';
 export class CustomMatPaginatorIntl extends MatPaginatorIntl {

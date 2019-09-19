@@ -32,12 +32,13 @@ npm i ng-dyna-form
 ### build form
 ```typescript
   constructor(private dynaFB: DynaFormBuilder) {
-      this.dynaFB.buildFormFromClass(User, new User()).then(form => (this.form = form));
+      this.dynaFB.buildFormFromClass(User, new User())
+        .then(form => (this.form = form));
     }
   }
 ```
 
-now you can create you own template, or use my form remplate:
+You can create youר template, or use my form template:
 ```typescript
 const formModel: FormModel<User> = {
     feilds: [
@@ -59,9 +60,9 @@ const formModel: FormModel<User> = {
       data: this.formModel,
       direction: 'rtl',
     });
-    // or
+    // or 
     // <p-form [formModel]="formModel"></p-form>
 
 ``` 
 
-
+[stackblitz demo](https://stackblitz.com/edit/mat-virtual-table-special-cells-tpapjd)
