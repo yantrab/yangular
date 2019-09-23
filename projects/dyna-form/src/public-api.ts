@@ -4,3 +4,4 @@
 
 export * from './lib/dyna-form/dyna-form.builder';
 export * from './lib/dyna.module';
+export * from './lib/form/form.component';

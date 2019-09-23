@@ -65,5 +65,4 @@ const formModel: FormModel<User> = {
     // <p-form [formModel]="formModel"></p-form>
 
 ``` 
-
-[stackblitz demo](https://stackblitz.com/edit/mat-virtual-table-special-cells-tpapjd)
+[stackblitz demo](https://stackblitz.com/edit/angular-material-build-form?file=src/app/app.component.ts)
