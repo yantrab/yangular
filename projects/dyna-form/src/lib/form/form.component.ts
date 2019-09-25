@@ -8,7 +8,7 @@ export interface FormModel<T> {
     model: Partial<T>;
     feilds: Array<{
         key: keyof T;
-        placeHolder: string;
+        placeHolder?: string;
         appearance?: 'legacy ' | 'standard' | 'fill' | 'outline';
         hint?: string;
         type?: string;

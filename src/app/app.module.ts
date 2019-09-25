@@ -8,38 +8,25 @@ import { MatDialogModule, MatButtonModule } from '@angular/material';
 import { TableComponent } from '../../projects/mat-virtual-table/src/lib/table.component';
 import { DynaFormModule } from '../../projects/dyna-form/src/lib/dyna.module';
 export class CustomMatPaginatorIntl extends MatPaginatorIntl {
-  nextPageLabel = 'הבא';
-  previousPageLabel = 'קודם';
-  getRangeLabel = (page, pageSize, length) => {
-    if (length === 0 || pageSize === 0) {
-      return '0 מתוך ' + length;
-    }
-    length = Math.max(length, 0);
-    const startIndex = page * pageSize;
-    // If the start index exceeds the list length, do not try and fix the end index to the end.
-    const endIndex = startIndex < length ?
-      Math.min(startIndex + pageSize, length) :
-      startIndex + pageSize;
-    return startIndex + 1 + ' - ' + endIndex + ' מתוך ' + length;
-  }
+    nextPageLabel = 'הבא';
+    previousPageLabel = 'קודם';
+    getRangeLabel = (page, pageSize, length) => {
+        if (length === 0 || pageSize === 0) {
+            return '0 מתוך ' + length;
+        }
+        length = Math.max(length, 0);
+        const startIndex = page * pageSize;
+        // If the start index exceeds the list length, do not try and fix the end index to the end.
+        const endIndex = startIndex < length ? Math.min(startIndex + pageSize, length) : startIndex + pageSize;
+        return startIndex + 1 + ' - ' + endIndex + ' מתוך ' + length;
+    };
 }
 
 @NgModule({
-  declarations: [
-    AppComponent
-  ],
-  imports: [
-    BrowserModule,
-    TableModule,
-    BrowserAnimationsModule,
-    MatDialogModule,
-    MatButtonModule,
-    MatIconModule,
-    DynaFormModule,
-  ],
-  providers: [{ provide: MatPaginatorIntl, useClass: CustomMatPaginatorIntl}],
-  bootstrap: [AppComponent],
-  entryComponents:[TableComponent]
-
+    declarations: [AppComponent],
+    imports: [BrowserModule, TableModule, BrowserAnimationsModule, MatDialogModule, MatButtonModule, DynaFormModule],
+    providers: [{ provide: MatPaginatorIntl, useClass: CustomMatPaginatorIntl }],
+    bootstrap: [AppComponent],
+    entryComponents: [TableComponent],
 })
-export class AppModule { }
+export class AppModule {}

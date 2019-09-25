@@ -16,6 +16,7 @@ import { FormComponent } from './form/form.component';
         MatIconModule,
         MatButtonModule,
         MatDialogModule,
+        MatIconModule,
     ],
     providers: [DynaFormBuilder],
     exports: [TextBoxComponent, FormComponent],
