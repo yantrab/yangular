@@ -30,6 +30,12 @@
       ],
       "dyna-form/*": [
         "dist/dyna-form/*"
+      ],
+      "ng-dialog-animation": [
+        "dist/ng-dialog-animation"
+      ],
+      "ng-dialog-animation/*": [
+        "dist/ng-dialog-animation/*"
       ]
     }
   }

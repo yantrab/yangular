@@ -204,6 +204,41 @@
           }
         }
       }
+    },
+    "ng-dialog-animation": {
+      "projectType": "library",
+      "root": "projects/ng-dialog-animation",
+      "sourceRoot": "projects/ng-dialog-animation/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/ng-dialog-animation/tsconfig.lib.json",
+            "project": "projects/ng-dialog-animation/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/ng-dialog-animation/src/test.ts",
+            "tsConfig": "projects/ng-dialog-animation/tsconfig.spec.json",
+            "karmaConfig": "projects/ng-dialog-animation/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/ng-dialog-animation/tsconfig.lib.json",
+              "projects/ng-dialog-animation/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
     }
   },
   "defaultProject": "mat-virtual-table"
