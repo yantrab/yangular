@@ -1,11 +1,15 @@
 {
     "name": "ng-dialog-animation",
     "version": "0.0.1",
+    "license": "ISC",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/yantrab/yangular/tree/master/projects/ng-dialog-animation"
+    },
     "peerDependencies": {
         "@angular/common": "^8.2.4",
         "@angular/core": "^8.2.4",
         "@angular/cdk": "^8.1.4",
-        "@angular/flex-layout": "8.0.0-beta.27",
         "@angular/material": "^8.1.4"
     }
 }
