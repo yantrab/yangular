@@ -4,14 +4,17 @@ import { ComponentType } from '@angular/cdk/portal';
 import { Subject } from 'rxjs';
 const diractionMap = { left: 'left', right: 'left', top: 'top', bottom: 'top' };
 const multyMap = { left: 1, right: -1, top: 1, bottom: -1 };
-type AnimationOption = { keyframes?: Keyframe[]; keyframeAnimationOptions: KeyframeAnimationOptions };
+interface AnimationOption {
+    keyframes?: Keyframe[];
+    keyframeAnimationOptions: KeyframeAnimationOptions;
+}
 export interface MatDialogConfig extends _MatDialogConfig {
     title?: string;
     animation?:
         | {
               to: 'aside' | 'top' | 'bottom' | 'left' | 'right';
               incomingOptions?: { keyframes?: Keyframe[]; keyframeAnimationOptions: KeyframeAnimationOptions };
-              outgoingOptions?: { keyframes?: Keyframe[]; keyframeAnimationOptions: KeyframeAnimationOptions }
+              outgoingOptions?: { keyframes?: Keyframe[]; keyframeAnimationOptions: KeyframeAnimationOptions };
           }
         | {
               to?: 'aside' | 'top' | 'bottom' | 'left' | 'right';
@@ -39,15 +42,14 @@ export class NgDialogAnimationService {
         componentOrTemplateRef: ComponentType<T> | TemplateRef<T>,
         config?: MatDialogConfig,
     ): MatDialogRef<T, R> {
-        const dir: 'ltr' | 'rtl' =
-            config.direction || (document.querySelectorAll('[dir="rtl"]').length ? 'rtl' : 'ltr');
+        const dir: 'ltr' | 'rtl' = config.direction || (document.querySelectorAll('[dir="rtl"]').length ? 'rtl' : 'ltr');
         config.direction = config.direction || dir;
         if (config.animation) {
             if (config.animation.to === 'aside') {
                 config.animation.to = dir === 'rtl' ? 'left' : 'right';
             }
 
-            if (config.position.rowEnd) {
+            if (config.position && config.position.rowEnd) {
                 if (dir === 'rtl') {
                     config.position.right = config.position.rowEnd;
                 } else {
@@ -55,7 +57,7 @@ export class NgDialogAnimationService {
                 }
             }
 
-            if (config.position.rowStart) {
+            if (config.position && config.position.rowStart) {
                 if (dir === 'rtl') {
                     config.position.left = config.position.rowEnd;
                 } else {
@@ -104,10 +106,10 @@ export class NgDialogAnimationService {
                 incomeKeyFrames = incomeKeyFrames || [keyFrame100, keyFrame0];
                 outgoingKeyFrames = outgoingKeyFrames || [keyFrame0, keyFrame100];
             }
-            animate(incomeKeyFrames, incomingOptions);
+            animate(incomeKeyFrames, incomingOptions.keyframeAnimationOptions);
             const closeHandler = (dialogResult?: R) => {
                 _afterClosed.next();
-                const animation = animate(outgoingKeyFrames, outgoingOptions);
+                const animation = animate(outgoingKeyFrames, outgoingOptions.keyframeAnimationOptions);
                 animation.onfinish = () => {
                     (wrapper as HTMLElement).style.display = 'none';
                     this.ngZone.run(() => ref.close(dialogResult));

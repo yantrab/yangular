@@ -21,4 +21,4 @@ This library using angular material dialog with animation, title, and rtl suppor
           };
 
 ```
-[stackblitz playground](https://stackblitz.com/angular/eppnjdeykkm?file=app%2Fdialog-overview-example.ts)
+[stackblitz playground](https://stackblitz.com/edit/angular-material-animation?file=app/dialog-overview-example.ts)
