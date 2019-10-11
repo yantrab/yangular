@@ -1,42 +1,26 @@
 {
-  "compileOnSave": false,
-  "compilerOptions": {
-    "baseUrl": "./",
-    "outDir": "./dist/out-tsc",
-    "sourceMap": true,
-    "declaration": false,
-    "module": "es2015",
-    "moduleResolution": "node",
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "importHelpers": true,
-    "target": "es5",
-    "typeRoots": [
-      "node_modules/@types"
-    ],
-    "lib": [
-      "es2018",
-      "dom"
-    ],
-    "paths": {
-      "mat-virtual-table": [
-        "dist/mat-virtual-table"
-      ],
-      "mat-virtual-table/*": [
-        "dist/mat-virtual-table/*"
-      ],
-      "dyna-form": [
-        "dist/dyna-form"
-      ],
-      "dyna-form/*": [
-        "dist/dyna-form/*"
-      ],
-      "ng-dialog-animation": [
-        "dist/ng-dialog-animation"
-      ],
-      "ng-dialog-animation/*": [
-        "dist/ng-dialog-animation/*"
-      ]
+    "compileOnSave": false,
+    "compilerOptions": {
+        "baseUrl": "./",
+        "outDir": "./dist/out-tsc",
+        "sourceMap": true,
+        "declaration": false,
+        "module": "es2015",
+        "moduleResolution": "node",
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "importHelpers": true,
+        "target": "es5",
+        "typeRoots": ["node_modules/@types"],
+        "lib": ["es2018", "dom"],
+        "paths": {
+            "mat-virtual-table": ["dist/mat-virtual-table"],
+            "mat-virtual-table/*": ["dist/mat-virtual-table/*"],
+            "dyna-form": ["dist/dyna-form"],
+            "dyna-form/*": ["dist/dyna-form/*"],
+            "ng-dialog-animation": ["dist/ng-dialog-animation"],
+            "ng-dialog-animation/*": ["dist/ng-dialog-animation/*"]
+        },
+        "plugins": [{ "transform": "ts-optchain/transform" }]
     }
-  }
 }
