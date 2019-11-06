@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ColumnDef, TableComponent } from 'projects/mat-virtual-table/src/public-api';
-import { MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import { FormComponent, FormModel } from '../../projects/dyna-form/src/lib/form/form.component';
 import { IsEmail, IsOptional, IsString, Length } from 'class-validator';
 export class User {

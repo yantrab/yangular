@@ -1,5 +1,5 @@
 import { Component, Inject, Input, Optional, OnInit, Output, EventEmitter } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormGroup } from '@angular/forms';
 import { DynaFormBuilder, validateAllFields } from '../dyna-form/dyna-form.builder';
 

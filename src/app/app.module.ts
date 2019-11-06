@@ -3,12 +3,12 @@ import { NgModule } from '@angular/core';
 import { TableModule } from '../../projects/mat-virtual-table/src/lib/table.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatPaginatorIntl } from '@angular/material';
-import { MatDialogModule, MatButtonModule } from '@angular/material';
+import { MatPaginatorIntl } from '@angular/material/paginator';
+import { MatDialogModule } from '@angular/material/dialog';
 import { TableComponent } from '../../projects/mat-virtual-table/src/lib/table.component';
 import { DynaFormModule } from '../../projects/dyna-form/src/lib/dyna.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { Routes, RouterModule } from '@angular/router';
+import { MatButtonModule } from '@angular/material/button';
 
 export class CustomMatPaginatorIntl extends MatPaginatorIntl {
     nextPageLabel = 'הבא';
@@ -22,13 +22,12 @@ export class CustomMatPaginatorIntl extends MatPaginatorIntl {
         // If the start index exceeds the list length, do not try and fix the end index to the end.
         const endIndex = startIndex < length ? Math.min(startIndex + pageSize, length) : startIndex + pageSize;
         return startIndex + 1 + ' - ' + endIndex + ' מתוך ' + length;
-    };
+    }
 }
 
 @NgModule({
     declarations: [AppComponent],
     imports: [
-        RouterModule.forRoot(routes)
         BrowserModule,
         TableModule,
         BrowserAnimationsModule,
@@ -37,7 +36,6 @@ export class CustomMatPaginatorIntl extends MatPaginatorIntl {
         DynaFormModule,
         FlexLayoutModule,
     ],
-    export:[RouterModule]
     providers: [{ provide: MatPaginatorIntl, useClass: CustomMatPaginatorIntl }],
     bootstrap: [AppComponent],
     entryComponents: [TableComponent],
