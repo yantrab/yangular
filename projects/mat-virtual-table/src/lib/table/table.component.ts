@@ -30,7 +30,7 @@ interface ColumnDef extends _columnsDef {
     template?;
 }
 
-export class CustomVirtualScrollStrategy extends FixedSizeVirtualScrollStrategy {
+class CustomVirtualScrollStrategy extends FixedSizeVirtualScrollStrategy {
     constructor() {
         super(47, 1000, 2000);
     }
@@ -46,7 +46,6 @@ export class CustomVirtualScrollStrategy extends FixedSizeVirtualScrollStrategy 
     styleUrls: ['./table.component.scss'],
     providers: [{ provide: VIRTUAL_SCROLL_STRATEGY, useClass: CustomVirtualScrollStrategy }],
     encapsulation: ViewEncapsulation.None,
-    // changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TableComponent implements OnInit, AfterViewInit {
     constructor(@Optional() @Inject(MAT_DIALOG_DATA) public data?) {
@@ -271,8 +270,6 @@ export class TableComponent implements OnInit, AfterViewInit {
             ev.target.style.cursor = 'col-resize';
             this.isResizeActive = true;
         }
-        // else if (elWidth - x < 20 || x - elWidth > -20) {
-        //     ev.target.style.cursor = 'default';
-        // }
+
     }
 }
