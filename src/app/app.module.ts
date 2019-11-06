@@ -8,6 +8,7 @@ import { MatDialogModule, MatButtonModule } from '@angular/material';
 import { TableComponent } from '../../projects/mat-virtual-table/src/lib/table.component';
 import { DynaFormModule } from '../../projects/dyna-form/src/lib/dyna.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { Routes, RouterModule } from '@angular/router';
 
 export class CustomMatPaginatorIntl extends MatPaginatorIntl {
     nextPageLabel = 'הבא';
@@ -27,6 +28,7 @@ export class CustomMatPaginatorIntl extends MatPaginatorIntl {
 @NgModule({
     declarations: [AppComponent],
     imports: [
+        RouterModule.forRoot(routes)
         BrowserModule,
         TableModule,
         BrowserAnimationsModule,
@@ -35,6 +37,7 @@ export class CustomMatPaginatorIntl extends MatPaginatorIntl {
         DynaFormModule,
         FlexLayoutModule,
     ],
+    export:[RouterModule]
     providers: [{ provide: MatPaginatorIntl, useClass: CustomMatPaginatorIntl }],
     bootstrap: [AppComponent],
     entryComponents: [TableComponent],
