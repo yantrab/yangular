@@ -79,9 +79,13 @@ export class AppComponent implements OnInit {
     openForm() {
         this.dialog.open(FormComponent, {
             width: '80%',
+            height: '500px',
             maxWidth: '540px',
             data: this.formModel,
             direction: 'rtl',
         });
+    }
+    onFormSubmit(val) {
+        console.log(val);
     }
 }

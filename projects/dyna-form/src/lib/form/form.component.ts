@@ -1,22 +1,24 @@
-import { Component, Inject, Input, Optional, OnInit } from '@angular/core';
+import { Component, Inject, Input, Optional, OnInit, Output, EventEmitter } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { FormGroup } from '@angular/forms';
 import { DynaFormBuilder, validateAllFields } from '../dyna-form/dyna-form.builder';
 
 export interface FormModel<T> {
     modelConstructor: new (model: T) => any;
-    model: Partial<T>;
+    model?: Partial<T>;
     feilds: Array<{
         key: keyof T;
         placeHolder?: string;
-        appearance?: 'legacy ' | 'standard' | 'fill' | 'outline';
+        appearance?: 'legacy' | 'standard' | 'fill' | 'outline';
         hint?: string;
         type?: string;
         isTextera?: boolean;
     }>;
-    appearance?: 'legacy ' | 'standard' | 'fill' | 'outline';
+    appearance?: 'legacy' | 'standard' | 'fill' | 'outline';
     errorTranslations?: {};
     formTitle?: string;
+    formSaveButtonTitle?: string;
+    formCancelButtonTitle?: string;
 }
 
 @Component({
@@ -27,6 +29,7 @@ export interface FormModel<T> {
 export class FormComponent implements OnInit {
     form: FormGroup;
     @Input() formModel: FormModel<any>;
+    @Output() submit = new EventEmitter();
     constructor(
         @Optional() public dialogRef: MatDialogRef<FormComponent>,
         private dynaFB: DynaFormBuilder,
@@ -40,12 +43,15 @@ export class FormComponent implements OnInit {
         }
     }
     ngOnInit(): void {
-        if (!this.formModel.errorTranslations) this.formModel.errorTranslations = {};
+        if (!this.formModel.errorTranslations) {
+            this.formModel.errorTranslations = {};
+        }
 
-        if (!this.form)
+        if (!this.form) {
             this.dynaFB
                 .buildFormFromClass(this.formModel.modelConstructor, this.formModel.model)
                 .then(form => (this.form = form));
+        }
     }
 
     save(e) {
@@ -57,7 +63,11 @@ export class FormComponent implements OnInit {
                     delete this.form.value[key];
                 }
             }
-            this.dialogRef.close(this.form.value);
+            if (this.dialogRef) {
+                this.dialogRef.close(this.form.value);
+            } else {
+                this.submit.emit(this.form.value);
+            }
         }
         e.preventDefault();
     }

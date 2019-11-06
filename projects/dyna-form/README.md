@@ -67,7 +67,7 @@ this.dialog.open(FormComponent, {
     direction: 'rtl',
 });
 // or
-// <p-form [formModel]="formModel"></p-form>
+// <p-form [formModel]="formModel" (submit)="onFormSubmit($event)"></p-form>
 ```
 
 [stackblitz demo](https://stackblitz.com/edit/angular-material-animation?file=app/dialog-overview-example.ts)

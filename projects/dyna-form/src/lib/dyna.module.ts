@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { MatInputModule, MatFormFieldModule, MatIconModule, MatButtonModule, MatDialogModule } from '@angular/material';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FormComponent } from './form/form.component';
+import { FlexLayoutModule } from '@angular/flex-layout';
 @NgModule({
     declarations: [TextBoxComponent, FormComponent],
     imports: [
@@ -17,6 +18,7 @@ import { FormComponent } from './form/form.component';
         MatButtonModule,
         MatDialogModule,
         MatIconModule,
+        FlexLayoutModule,
     ],
     providers: [DynaFormBuilder],
     exports: [TextBoxComponent, FormComponent],

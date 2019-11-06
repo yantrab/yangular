@@ -3,10 +3,12 @@ import { NgModule } from '@angular/core';
 import { TableModule } from '../../projects/mat-virtual-table/src/lib/table.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatIconModule, MatPaginatorIntl } from '@angular/material';
+import { MatPaginatorIntl } from '@angular/material';
 import { MatDialogModule, MatButtonModule } from '@angular/material';
 import { TableComponent } from '../../projects/mat-virtual-table/src/lib/table.component';
 import { DynaFormModule } from '../../projects/dyna-form/src/lib/dyna.module';
+import { FlexLayoutModule } from '@angular/flex-layout';
+
 export class CustomMatPaginatorIntl extends MatPaginatorIntl {
     nextPageLabel = 'הבא';
     previousPageLabel = 'קודם';
@@ -24,7 +26,15 @@ export class CustomMatPaginatorIntl extends MatPaginatorIntl {
 
 @NgModule({
     declarations: [AppComponent],
-    imports: [BrowserModule, TableModule, BrowserAnimationsModule, MatDialogModule, MatButtonModule, DynaFormModule],
+    imports: [
+        BrowserModule,
+        TableModule,
+        BrowserAnimationsModule,
+        MatDialogModule,
+        MatButtonModule,
+        DynaFormModule,
+        FlexLayoutModule,
+    ],
     providers: [{ provide: MatPaginatorIntl, useClass: CustomMatPaginatorIntl }],
     bootstrap: [AppComponent],
     entryComponents: [TableComponent],
