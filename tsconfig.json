@@ -22,5 +22,10 @@
             "ng-dialog-animation/*": ["dist/ng-dialog-animation/*"]
         },
         "plugins": [{ "transform": "ts-optchain/transform" }]
+    },
+    "angularCompilerOptions": {
+        "enableIvy": false,
+        "fullTemplateTypeCheck": false,
+        "strictInjectionParameters": false
     }
 }

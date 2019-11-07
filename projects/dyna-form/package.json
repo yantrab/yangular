@@ -5,7 +5,7 @@
         "type": "git",
         "url": "https://github.com/yantrab/yangular/tree/master/projects/dyna-form"
     },
-    "version": "9.0.0",
+    "version": "9.0.1",
     "keywords": [
         "angular dynamic form",
         "dynamic form",
@@ -13,7 +13,6 @@
     ],
     "peerDependencies": {
         "@angular/flex-layout": "8.0.0-beta.27",
-       "class-validator": "0.11.0"
-
+        "class-validator": "0.11.0"
     }
 }
