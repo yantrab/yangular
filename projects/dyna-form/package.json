@@ -11,10 +11,9 @@
         "dynamic form",
         "form builder"
     ],
-    "dependencies": {
-        "class-validator": "0.11.0"
-    },
     "peerDependencies": {
-        "@angular/flex-layout": "8.0.0-beta.27"
+        "@angular/flex-layout": "8.0.0-beta.27",
+       "class-validator": "0.11.0"
+
     }
 }

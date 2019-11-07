@@ -18,19 +18,19 @@ import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import { distinctUntilChanged, debounceTime } from 'rxjs/operators';
 
 import { fromEvent } from 'rxjs';
-import { GridTableDataSource } from './data-source';
+import { GridTableDataSource } from '../data-source';
 import { ColumnDef as _columnsDef } from './table.interfaces';
 import { orderBy, keyBy, sumBy, maxBy, cloneDeep } from 'lodash';
-import { PCellDef } from './PCellDef';
+import { PCellDef } from '../PCellDef';
 import { FixedSizeVirtualScrollStrategy, VIRTUAL_SCROLL_STRATEGY } from '@angular/cdk/scrolling';
-import { getTextWidth } from './utils';
+import { getTextWidth } from '../utils';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSort } from '@angular/material/sort';
 interface ColumnDef extends _columnsDef {
     template?;
 }
 
-class CustomVirtualScrollStrategy extends FixedSizeVirtualScrollStrategy {
+export class CustomVirtualScrollStrategy extends FixedSizeVirtualScrollStrategy {
     constructor() {
         super(47, 1000, 2000);
     }
@@ -249,15 +249,17 @@ export class TableComponent implements OnInit, AfterViewInit {
     }
 
     mousemove(ev, i) {
-        if (!this.isResizable) { return; }
+        if (!this.isResizable) {
+            return;
+        }
         if (this.inMove) {
-          ev.target.style.cursor = 'col-resize';
-          return;
+            ev.target.style.cursor = 'col-resize';
+            return;
         }
         if (ev.target.tagName.toLowerCase() !== 'mat-header-cell') {
-          ev.target.style.cursor = 'pointer';
+            ev.target.style.cursor = 'pointer';
         } else {
-          ev.target.style.cursor = 'default';
+            ev.target.style.cursor = 'default';
         }
         this.isResizeActive = false;
         const el = ev.currentTarget;
@@ -270,6 +272,5 @@ export class TableComponent implements OnInit, AfterViewInit {
             ev.target.style.cursor = 'col-resize';
             this.isResizeActive = true;
         }
-
     }
 }

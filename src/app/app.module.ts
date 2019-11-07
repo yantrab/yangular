@@ -5,7 +5,7 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatPaginatorIntl } from '@angular/material/paginator';
 import { MatDialogModule } from '@angular/material/dialog';
-import { TableComponent } from '../../projects/mat-virtual-table/src/lib/table.component';
+import { TableComponent } from '../../projects/mat-virtual-table/src/lib/table/table.component';
 import { DynaFormModule } from '../../projects/dyna-form/src/lib/dyna.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatButtonModule } from '@angular/material/button';
