@@ -12,6 +12,8 @@ import {
     HostListener,
     Optional,
     Inject,
+    ChangeDetectionStrategy,
+    ChangeDetectorRef,
 } from '@angular/core';
 
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
@@ -46,9 +48,10 @@ export class CustomVirtualScrollStrategy extends FixedSizeVirtualScrollStrategy 
     styleUrls: ['./table.component.scss'],
     providers: [{ provide: VIRTUAL_SCROLL_STRATEGY, useClass: CustomVirtualScrollStrategy }],
     encapsulation: ViewEncapsulation.None,
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TableComponent implements OnInit, AfterViewInit {
-    constructor(@Optional() @Inject(MAT_DIALOG_DATA) public data?) {
+    constructor(private ref: ChangeDetectorRef, @Optional() @Inject(MAT_DIALOG_DATA) public data?) {
         if (data) {
             this.isFilterable = !!data.isFilterable;
             this.isResizable = !!data.isResizable;
@@ -62,7 +65,8 @@ export class TableComponent implements OnInit, AfterViewInit {
             this.columnsDef = data.columnsDef;
             setTimeout(() => {
                 this.rows = data.rows;
-            }, 100);
+                this.ref.markForCheck();
+            });
         }
     }
 
@@ -116,6 +120,7 @@ export class TableComponent implements OnInit, AfterViewInit {
             setTimeout(() => {
                 this.dataSource.allData = orderBy(this.rows, matSort.active, matSort.direction as any);
                 this.pending = false;
+                this.ref.markForCheck();
             }, 200);
         });
     }
@@ -157,6 +162,7 @@ export class TableComponent implements OnInit, AfterViewInit {
             this.columnsDef.forEach(c => (widths[c.field] += toAdd));
         }
         this.columnsDef.forEach(c => (c.width = c.width && !event ? c.width : widths[c.field] + 'px'));
+        this.ref.markForCheck();
     }
 
     initDatasource() {
@@ -186,10 +192,7 @@ export class TableComponent implements OnInit, AfterViewInit {
     ngAfterViewInit(): void {
         if (this.isFilterable || this.columnsDef.some(c => c.isFilterable)) {
             fromEvent(this.filter.nativeElement, 'keyup')
-                .pipe(
-                    distinctUntilChanged(),
-                    debounceTime(150),
-                )
+                .pipe(distinctUntilChanged(), debounceTime(150))
                 .subscribe(() => {
                     this.pending = true;
                     setTimeout(() => {
@@ -205,6 +208,7 @@ export class TableComponent implements OnInit, AfterViewInit {
                         }
 
                         this.pending = false;
+                        this.ref.markForCheck();
                     }, 200);
                 });
         }
@@ -213,6 +217,7 @@ export class TableComponent implements OnInit, AfterViewInit {
             this._CellDefs.forEach(columnDef => {
                 this.columnsDef.find(c => c.field === columnDef.columnName).template = columnDef.template;
             });
+            this.ref.markForCheck();
         }, 0);
 
         this.dir = window.getComputedStyle(this.tableComponent.nativeElement).direction as any;
