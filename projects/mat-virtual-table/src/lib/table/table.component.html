@@ -22,7 +22,7 @@
                     <ng-container
                         *ngIf="column.template; else defult"
                         [ngTemplateOutlet]="column.template"
-                        [ngTemplateOutletContext]="{ row: row }"
+                        [ngTemplateOutletContext]="{ row: row, index:i }"
                     >
                     </ng-container>
                     <ng-template #defult>{{
