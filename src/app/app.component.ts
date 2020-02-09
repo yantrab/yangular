@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ColumnDef, TableComponent } from 'projects/mat-virtual-table/src/public-api';
-import { MatDialog } from '@angular/material/dialog';
 import { FormComponent, FormModel } from '../../projects/dyna-form/src/lib/form/form.component';
 import { IsEmail, IsOptional, IsString, Length } from 'class-validator';
+import { NgDialogAnimationService } from '../../projects/ng-dialog-animation/src/lib/ng-dialog-animation.service';
 export class User {
     @IsString() @IsEmail() email: string;
     @IsString() @Length(4, 10) password: string;
@@ -15,7 +15,7 @@ export class User {
     styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
-    constructor(private dialog: MatDialog) {}
+    constructor(private dialog: NgDialogAnimationService) {}
     formModel: FormModel<User> = {
         feilds: [
             { placeHolder: 'אמייל', key: 'email', appearance: 'outline' },
@@ -69,6 +69,8 @@ export class AppComponent implements OnInit {
         this.dialog.open(TableComponent, {
             width: '900px',
             height: '500px',
+            title: 'title',
+
             data: {
                 rows: this.rows,
                 columnsDef: this.columns,
