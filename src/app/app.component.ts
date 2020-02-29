@@ -84,7 +84,7 @@ export class AppComponent implements OnInit {
             height: '500px',
             maxWidth: '540px',
             data: this.formModel,
-            direction: 'rtl',
+            position: {rowEnd: '0'}
         });
     }
     onFormSubmit(val) {

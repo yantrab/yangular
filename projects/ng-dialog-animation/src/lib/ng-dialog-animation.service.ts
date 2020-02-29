@@ -53,23 +53,24 @@ export class NgDialogAnimationService {
             if (config.animation.to === 'aside') {
                 config.animation.to = dir === 'rtl' ? 'left' : 'right';
             }
-
-            if (config.position && config.position.rowEnd) {
-                if (dir === 'rtl') {
-                    config.position.right = config.position.rowEnd;
-                } else {
-                    config.position.left = config.position.rowEnd;
-                }
-            }
-
-            if (config.position && config.position.rowStart) {
-                if (dir === 'rtl') {
-                    config.position.left = config.position.rowStart;
-                } else {
-                    config.position.right = config.position.rowStart;
-                }
-            }
         }
+
+        if (config.position && config.position.rowEnd) {
+          if (dir === 'rtl') {
+            config.position.right = config.position.rowEnd;
+          } else {
+            config.position.left = config.position.rowEnd;
+          }
+        }
+
+        if (config.position && config.position.rowStart) {
+          if (dir === 'rtl') {
+            config.position.left = config.position.rowStart;
+          } else {
+            config.position.right = config.position.rowStart;
+          }
+        }
+
         const ref = this.dialog.open(componentOrTemplateRef, config);
         const container = document.getElementsByTagName('mat-dialog-container')[0] as HTMLElement;
         if (config.title) {
