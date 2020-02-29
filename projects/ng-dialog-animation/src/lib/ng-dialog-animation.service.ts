@@ -64,9 +64,9 @@ export class NgDialogAnimationService {
 
             if (config.position && config.position.rowStart) {
                 if (dir === 'rtl') {
-                    config.position.left = config.position.rowEnd;
+                    config.position.left = config.position.rowStart;
                 } else {
-                    config.position.right = config.position.rowEnd;
+                    config.position.right = config.position.rowStart;
                 }
             }
         }
