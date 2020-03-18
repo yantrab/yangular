@@ -36,6 +36,13 @@
                     <mat-progress-bar mode="indeterminate" [class.show]="pending"> </mat-progress-bar>
                 </mat-header-cell>
             </ng-container>
+            <ng-container *ngIf="isDisplayingRowsEmptyMessage" matColumnDef="noData">
+                <mat-footer-cell *matFooterCellDef [attr.colspan]="columnsDef.length">
+                    <p>
+                      {{rowsEmptyMessage}}
+                    </p>
+                </mat-footer-cell>
+            </ng-container>
 
             <mat-header-row *matHeaderRowDef="columns; sticky: sticky" [style.top.px]="-dataSource?.offset">
             </mat-header-row>
@@ -45,6 +52,11 @@
                 [style.top.px]="dataSource?.offset + headerSize"
             >
             </mat-header-row>
+            <ng-container *ngIf="isDisplayingRowsEmptyMessage">
+                <mat-footer-row *matFooterRowDef="['noData']; sticky: sticky"
+                                [hidden]="dataSource && dataSource.allData.length > 0">
+                </mat-footer-row>
+            </ng-container>
             <mat-row *matRowDef="let row; columns: columns"></mat-row>
         </mat-table>
     </cdk-virtual-scroll-viewport>

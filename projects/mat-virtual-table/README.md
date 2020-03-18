@@ -88,6 +88,8 @@ export class CustomMatPaginatorIntl extends MatPaginatorIntl {
 @Input() headerSize = 56;
 @Input() pageSize = 50;
 @Input() paginator: boolean;
+@Input() isDisplayingRowsEmptyMessage = false; // false by default, support a centered message when there is no row.
+@Input() rowsEmptyMessage = 'No records found.';
 ```
 
 
