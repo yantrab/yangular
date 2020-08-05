@@ -50,6 +50,11 @@
     .mat-sort-header-container {
         height: 100%;
     }
+
+    .mat-footer-cell p {
+      width: 100%;
+      text-align: center;
+    }
 }
 
 #table {

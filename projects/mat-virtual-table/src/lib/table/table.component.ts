@@ -82,6 +82,8 @@ export class TableComponent implements OnInit, AfterViewInit {
     @Input() idFieldName = '_id';
     @Input() autoSizeColumns = true;
     @Input() paginator: boolean;
+    @Input() isDisplayingRowsEmptyMessage = false;
+    @Input() rowsEmptyMessage = 'No records found.';
     @Input() set columnsDef(columns: ColumnDef[]) {
         this._columnsDef = cloneDeep(columns);
         this.columns = this.columnsDef.map(c => c.field);
