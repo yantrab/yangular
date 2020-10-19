@@ -6,13 +6,14 @@ import { DynaFormBuilder, validateAllFields } from '../dyna-form/dyna-form.build
 export interface FormModel<T> {
     modelConstructor: new (model: T) => any;
     model?: Partial<T>;
-    feilds: Array<{
+    fields: Array<{
         key: keyof T;
         placeHolder?: string;
         appearance?: 'legacy' | 'standard' | 'fill' | 'outline';
         hint?: string;
         type?: string;
         isTextera?: boolean;
+        options?:{value: any, title: string}[]
     }>;
     appearance?: 'legacy' | 'standard' | 'fill' | 'outline';
     errorTranslations?: {};
@@ -28,6 +29,10 @@ export interface FormModel<T> {
 })
 export class FormComponent implements OnInit {
     form: FormGroup;
+
+    // https://material.angular.io/components/input/overview
+    materialInputTypes = ['color', 'date', 'datetime-local', 'email', 'month', 'password', 'search', 'tel', 'text', 'time', 'url', 'week']
+
     @Input() formModel: FormModel<any>;
     @Output() submit = new EventEmitter();
     constructor(

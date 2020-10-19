@@ -46,7 +46,7 @@ You can create your custom template, or using my form template:
 
 ```typescript
 formModel: FormModel<User> = {
-    feilds: [
+    fields: [
         { placeHolder: 'אמייל', key: 'email', appearance: 'outline' },
         { placeHolder: 'סיסמה', key: 'password', type: 'password' },
         { placeHolder: 'כתוב כאן מה אתה רוצה', key: 'msg', isTextera: true },

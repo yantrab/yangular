@@ -1,12 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { ColumnDef, TableComponent } from 'projects/mat-virtual-table/src/public-api';
 import { FormComponent, FormModel } from '../../projects/dyna-form/src/lib/form/form.component';
-import { IsEmail, IsOptional, IsString, Length } from 'class-validator';
+import { IsEmail, IsOptional, IsString, Length,IsEnum } from 'class-validator';
 import { NgDialogAnimationService } from '../../projects/ng-dialog-animation/src/lib/ng-dialog-animation.service';
+enum IsGirl{
+  YES,
+  NO
+}
 export class User {
     @IsString() @IsEmail() email: string;
     @IsString() @Length(4, 10) password: string;
     @IsOptional() @IsString() msg?: string;
+    @IsEnum(IsGirl) isGirl: IsGirl;
 }
 
 @Component({
@@ -17,13 +22,14 @@ export class User {
 export class AppComponent implements OnInit {
     constructor(private dialog: NgDialogAnimationService) {}
     formModel: FormModel<User> = {
-        feilds: [
+        fields: [
             { placeHolder: 'אמייל', key: 'email', appearance: 'outline' },
             { placeHolder: 'סיסמה', key: 'password', type: 'password' },
             { placeHolder: 'כתוב כאן מה אתה רוצה', key: 'msg', isTextera: true },
+            { placeHolder: "some radio", options:[{value:0, title: "YES"}, {value:1, title: "NO"}], key:"isGirl", type:"combo"}
         ],
         modelConstructor: User,
-        model: undefined, // or initial user
+        model: {isGirl: IsGirl.YES}, // or initial user
         errorTranslations: {
             'must be an email': 'נא הכנס מייל תקין',
             'must be a string': 'שדה חובה',
@@ -48,7 +54,7 @@ export class AppComponent implements OnInit {
             { field: 'long3' },
             { field: 'long4' },
         ];
-        this.rows = Array(1000)
+        this.rows = Array(100)
             .fill(0)
             .map((x, i) => {
                 return {
@@ -56,12 +62,27 @@ export class AppComponent implements OnInit {
                     id: i,
                     name2: 'Long nameeeeeee' + i,
                     id2: i,
-                    long: 'long long long long long long',
-                    long2: 'long long long long long long, long long long long long long',
-                    long3: 'long long long long long long long long long long long long long long long long long long',
-                    long4: 'long long long long long long',
+                    long: 'short ',
+                    long2: 'short short short',
+                    long3: 'short short short',
+                    long4: 'short short short',
                 };
             });
+
+      this.rows.push(...Array(20)
+        .fill(0)
+        .map((x, i) => {
+          return {
+            name: 'name' + i,
+            id: i,
+            name2: 'Long nameeeeeee' + i,
+            id2: i,
+            long: 'long long long long long long',
+            long2: 'long long long long long long, long long long long long long',
+            long3: 'long long long long long long long long long long long long long long long long long long',
+            long4: 'long long long long long long',
+          };
+        }));
         // }, 1000);
     }
 

@@ -10,22 +10,25 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatRadioModule } from '@angular/material/radio';
+import { ComboComponent } from './combo/combo.component';
 @NgModule({
-    declarations: [TextBoxComponent, FormComponent],
-    imports: [
-        FormsModule,
-        ReactiveFormsModule,
-        MatInputModule,
-        MatFormFieldModule,
-        CommonModule,
-        MatIconModule,
-        MatButtonModule,
-        MatDialogModule,
-        MatIconModule,
-        FlexLayoutModule,
-    ],
+    declarations: [TextBoxComponent, FormComponent, ComboComponent],
+  imports: [
+    FormsModule,
+    ReactiveFormsModule,
+    MatInputModule,
+    MatFormFieldModule,
+    CommonModule,
+    MatIconModule,
+    MatButtonModule,
+    MatDialogModule,
+    MatIconModule,
+    FlexLayoutModule,
+    MatRadioModule,
+  ],
     providers: [DynaFormBuilder],
-    exports: [TextBoxComponent, FormComponent],
+    exports: [TextBoxComponent, FormComponent, ComboComponent],
     entryComponents: [FormComponent],
 })
 export class DynaFormModule {}

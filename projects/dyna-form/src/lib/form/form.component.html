@@ -9,8 +9,9 @@
     >
         <h1 mat-dialog-title *ngIf="formModel.formTitle">{{ formModel.formTitle }}</h1>
         <div mat-dialog-content fxLayout="row wrap" fxLayoutAlign="space-between center">
+          <ng-container *ngFor="let field of formModel.fields">
             <p-text-box
-                *ngFor="let field of formModel.feilds"
+                *ngIf="materialInputTypes.includes(field.type || 'text')"
                 [type]="field.type"
                 [hint]="field.hint"
                 [class]="'form_' + field.key"
@@ -21,6 +22,17 @@
                 [errorTranslations]="formModel.errorTranslations"
                 [isTextarea]="field.isTextera"
             ></p-text-box>
+            <p-combo-box
+              *ngIf="field.type === 'combo'"
+              [hint]="field.hint"
+              [class]="'form_' + field.key"
+              ngDefaultControl
+              [formControl]="form.controls[field.key]"
+              [placeholder]="field.placeHolder"
+              [errorTranslations]="formModel.errorTranslations"
+              [options]="field.options"
+            ></p-combo-box>
+          </ng-container>
         </div>
         <mat-dialog-actions *ngIf="dialogRef">
             <button (click)="save($event)" mat-raised-button>{{ formModel.formSaveButtonTitle || 'save' }}</button>
