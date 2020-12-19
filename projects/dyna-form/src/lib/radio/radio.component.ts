@@ -3,7 +3,7 @@ import { FormControl } from '@angular/forms';
 import { MyErrorStateMatcher } from '../text-box/MyErrorStateMatcher';
 
 @Component({
-  selector: 'p-combo-box',
+  selector: 'p-radio',
   template: `
     <div style="display: flex; flex-direction: column;">
             <mat-label style="margin-left: 10px; margin-right: 10px" *ngIf="placeholder">{{ placeholder }}</mat-label>
@@ -18,7 +18,7 @@ import { MyErrorStateMatcher } from '../text-box/MyErrorStateMatcher';
     `,
   styles: [':host{width: 100%;}'],
 })
-export class ComboComponent {
+export class RadioComponent {
   @Input() formControl: FormControl;
   @Input() placeholder = '';
   @Input() hint;

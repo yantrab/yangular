@@ -26,7 +26,7 @@ export class AppComponent implements OnInit {
             { placeHolder: 'אמייל', key: 'email', appearance: 'outline' },
             { placeHolder: 'סיסמה', key: 'password', type: 'password' },
             { placeHolder: 'כתוב כאן מה אתה רוצה', key: 'msg', isTextera: true },
-            { placeHolder: "some radio", options:[{value:0, title: "YES"}, {value:1, title: "NO"}], key:"isGirl", type:"combo"}
+            { placeHolder: "some radio", options:[{value:0, title: "YES"}, {value:1, title: "NO"}], key:"isGirl", type:"radio"}
         ],
         modelConstructor: User,
         model: {isGirl: IsGirl.YES}, // or initial user

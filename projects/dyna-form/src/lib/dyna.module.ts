@@ -11,9 +11,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatRadioModule } from '@angular/material/radio';
-import { ComboComponent } from './combo/combo.component';
+import { RadioComponent } from './radio/radio.component';
 @NgModule({
-    declarations: [TextBoxComponent, FormComponent, ComboComponent],
+    declarations: [TextBoxComponent, FormComponent, RadioComponent],
   imports: [
     FormsModule,
     ReactiveFormsModule,
@@ -28,7 +28,7 @@ import { ComboComponent } from './combo/combo.component';
     MatRadioModule,
   ],
     providers: [DynaFormBuilder],
-    exports: [TextBoxComponent, FormComponent, ComboComponent],
+    exports: [TextBoxComponent, FormComponent, RadioComponent],
     entryComponents: [FormComponent],
 })
 export class DynaFormModule {}

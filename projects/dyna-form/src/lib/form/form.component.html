@@ -22,8 +22,8 @@
                 [errorTranslations]="formModel.errorTranslations"
                 [isTextarea]="field.isTextera"
             ></p-text-box>
-            <p-combo-box
-              *ngIf="field.type === 'combo'"
+            <p-radio
+              *ngIf="field.type === 'radio'"
               [hint]="field.hint"
               [class]="'form_' + field.key"
               ngDefaultControl
@@ -31,7 +31,7 @@
               [placeholder]="field.placeHolder"
               [errorTranslations]="formModel.errorTranslations"
               [options]="field.options"
-            ></p-combo-box>
+            ></p-radio>
           </ng-container>
         </div>
         <mat-dialog-actions *ngIf="dialogRef">

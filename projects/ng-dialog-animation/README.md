@@ -22,3 +22,41 @@ This library using angular material dialog with animation, title, and rtl suppor
 
 ```
 [stackblitz playground](https://stackblitz.com/edit/angular-material-animation?file=app/dialog-overview-example.ts)
+
+## Get started
+### install
+```
+npm i ng-dialog-animation
+
+```
+
+### add to providers 
+```typescript
+@NgModule({
+//....
+    providers: [
+        NgDialogAnimationService,
+    ],
+})
+//......
+```
+
+### inject to your component
+```typescript
+import { NgDialogAnimationService } from 'ng-dialog-animation';
+
+export class SomeComponent {
+  constructor(public dialog: NgDialogAnimationService) {
+  }
+}
+```
+
+### now you can use it like material dialog with the extra things
+```typescript
+  openDialog(): void {
+    const dialogRef = this.dialog.open(DialogOverviewExampleDialog, {
+      width: "250px",
+      animation: { to: "aside" }
+    }
+}
+```
