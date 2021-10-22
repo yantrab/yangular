@@ -50,7 +50,7 @@
         "tslint": "~5.15.0",
         "@angular-devkit/build-ng-packagr": "^0.900.0-rc.0",
         "@types/lodash": "^4.14.144",
-        "ng-packagr": "^9.0.0-rc.1",
+        "ng-packagr": "^10.1.1",
         "rxjs-tslint": "^0.1.7",
         "tsickle": ">=0.34.0"
     }
