@@ -39,19 +39,19 @@
         "codelyzer": "^5.1.2",
         "jasmine-core": "~3.5.0",
         "jasmine-spec-reporter": "~4.2.1",
-        "karma": "~4.4.1",
+        "karma": "~6.4.1",
         "karma-chrome-launcher": "~3.1.0",
         "karma-coverage-istanbul-reporter": "~2.1.0",
         "karma-jasmine": "~2.0.1",
         "karma-jasmine-html-reporter": "^1.4.2",
-        "protractor": "~5.4.2",
+        "protractor": "~5.4.4",
         "ts-node": "~8.4.1",
         "typescript": "3.6.4",
         "tslint": "~5.15.0",
         "@angular-devkit/build-ng-packagr": "^0.900.0-rc.0",
         "@types/lodash": "^4.14.144",
         "ng-packagr": "^10.1.1",
-        "rxjs-tslint": "^0.1.7",
+        "rxjs-tslint": "^0.1.8",
         "tsickle": ">=0.34.0"
     }
 }
